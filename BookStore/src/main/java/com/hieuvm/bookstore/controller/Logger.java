@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-//@WebFilter("/admin/*")
+@WebFilter("/admin/*")
 public class Logger implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-//        Filter.super.init(filterConfig);
+
     }
 
     @Override
@@ -26,7 +26,7 @@ public class Logger implements Filter {
         }
         HttpSession session=request1.getSession();
         String username= (String) session.getAttribute("username");
-        if(username!=null){
+        if(username != null){
             chain.doFilter(request,response);
             return;
         }else {

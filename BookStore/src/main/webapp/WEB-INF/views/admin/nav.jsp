@@ -64,7 +64,7 @@
                      with font-awesome or any other icon font library -->
 
                 <li class="nav-item">
-                    <a class="nav-link" href="<c:url value="/admin"/>">
+                    <a class="nav-link" href="<c:url value="/admin/home"/>">
                         <p>
                             Trang quản lý admin
                         </p>
@@ -91,6 +91,14 @@
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Quản lý sản phẩm
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value="/admin/bill/get"/>">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Quản lý đơn hàng
                         </p>
                     </a>
                 </li>

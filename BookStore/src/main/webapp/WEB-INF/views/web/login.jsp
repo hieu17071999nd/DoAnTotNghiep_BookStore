@@ -27,16 +27,16 @@
                                 <label for="password">Mật khẩu</label>
                                 <input type="password" id="password" name="password">
                             </div>
-                            <div class="group-input gi-check">
-                                <div class="gi-more">
-                                    <label for="save-pass">
-                                        Lưu mật khẩu
-                                        <input type="checkbox" id="save-pass">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <a href="#" class="forget-pass">Quên mật khẩu</a>
-                                </div>
-                            </div>
+<%--                            <div class="group-input gi-check">--%>
+<%--                                <div class="gi-more">--%>
+<%--                                    <label for="save-pass">--%>
+<%--                                        Lưu mật khẩu--%>
+<%--                                        <input type="checkbox" id="save-pass">--%>
+<%--                                        <span class="checkmark"></span>--%>
+<%--                                    </label>--%>
+<%--                                    <a href="#" class="forget-pass">Quên mật khẩu</a>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
                             <button type="submit" class="site-btn login-btn">Đăng nhập</button>
                         </form>
                         <div class="switch-login">

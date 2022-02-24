@@ -19,66 +19,66 @@
 </head>
 <body>
     <header id="tg-header" class="tg-header tg-haslayout">
-        <div class="tg-topbar">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <ul class="tg-addnav">
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <i class="icon-envelope"></i>
-                                    <em>Contact</em>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <i class="icon-question-circle"></i>
-                                    <em>Help</em>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="dropdown tg-themedropdown tg-currencydropdown">
-                            <a href="javascript:void(0);" id="tg-currenty" class="tg-btnthemedropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="icon-earth"></i>
-                                <span>Currency</span>
-                            </a>
-                            <ul class="dropdown-menu tg-themedropdownmenu" aria-labelledby="tg-currenty">
-                                <li>
-                                    <a href="javascript:void(0);">
-                                        <i>£</i>
-                                        <span>British Pound</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0);">
-                                        <i>$</i>
-                                        <span>Us Dollar</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0);">
-                                        <i>€</i>
-                                        <span>Euro</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tg-userlogin">
-                            <c:choose>
-                                <c:when test="${customer!=null}">
-                                    <figure><a href="javascript:void(0);"><img src="<c:url value="/resources/images/user/${customer.avatar}"/>" alt="Khách hàng chính chủ"></a></figure>
-                                    <span>Hi, ${customer.name}</span>
-                                </c:when>
-                                <c:when test="${customer==null}">
-                                    <figure><a href="javascript:void(0);"><img src="<c:url value="/resources/images/user/IMG2.jpg"/>" alt="Khách hàng vãng lai"></a></figure>
-                                    <span>Hi, John</span>
-                                </c:when>
-                            </c:choose>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<%--        <div class="tg-topbar">--%>
+<%--            <div class="container">--%>
+<%--                <div class="row">--%>
+<%--                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">--%>
+<%--&lt;%&ndash;                        <ul class="tg-addnav">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <a href="javascript:void(0);">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <i class="icon-envelope"></i>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <em>Contact</em>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                </a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            </li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <a href="javascript:void(0);">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <i class="icon-question-circle"></i>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <em>Help</em>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                </a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            </li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        </ul>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        <div class="dropdown tg-themedropdown tg-currencydropdown">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <a href="javascript:void(0);" id="tg-currenty" class="tg-btnthemedropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <i class="icon-earth"></i>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <span>Currency</span>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            </a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <ul class="dropdown-menu tg-themedropdownmenu" aria-labelledby="tg-currenty">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <a href="javascript:void(0);">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                        <i>£</i>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                        <span>British Pound</span>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    </a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                </li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <a href="javascript:void(0);">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                        <i>$</i>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                        <span>Us Dollar</span>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    </a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                </li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <a href="javascript:void(0);">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                        <i>€</i>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                        <span>Euro</span>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    </a>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                </li>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            </ul>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        </div>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        <div class="tg-userlogin">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            <c:choose>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <c:when test="${customer!=null}">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <figure><a href="javascript:void(0);"><img src="<c:url value="/resources/images/user/${customer.avatar}"/>" alt="Khách hàng chính chủ"></a></figure>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <span> ${customer.name}</span>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                </c:when>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                <c:when test="${customer==null}">&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <figure><a href="javascript:void(0);"><img src="<c:url value="/resources/images/user/IMG2.jpg"/>" alt="Khách hàng vãng lai"></a></figure>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                    <span>Hi, John</span>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                                </c:when>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            </c:choose>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                        </div>&ndash;%&gt;--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
         <div class="tg-middlecontainer">
             <div class="container">
                 <div class="row">
@@ -102,7 +102,7 @@
                                     <div class="dropdown tg-themedropdown tg-minicartdropdown">
                                         <a href="javascript:void(0);" id="tg-minicart" class="tg-btnthemedropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #77b748">
 <%--                                            <span class="tg-themebadge">3</span>--%>
-                                            <i class="icon-profile"></i>
+                                            <i class="icon-user"></i>
                                             <span>Tài khoản</span>
                                         </a>
                                         <div class="dropdown-menu tg-themedropdownmenu" aria-labelledby="tg-minicart">
@@ -167,8 +167,8 @@
                             </div>
                             <div id="tg-navigation" class="collapse navbar-collapse tg-navigation">
                                 <ul>
-                                    <li><a href="<c:url value="/trang-chu"/>">Trang chủ</a></li>
-                                    <li class="menu-item-has-children menu-item-has-mega-menu"><a href="javascript:void(0);">Thể loại</a>
+                                    <li><a href="<c:url value="/trang-chu"/>">Trang chủ       </a></li>
+                                    <li class="menu-item-has-children menu-item-has-mega-menu"><a href="javascript:void(0);">Thể loại        </a>
                                         <div class="mega-menu">
                                             <ul class="tg-themetabnav" role="tablist">
                                                 <li role="presentation" class="active">
@@ -223,9 +223,9 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li><a href="products.html">Sách bán chạy</a></li>
-                                    <li><a href="products.html">Sách đang giảm giá</a></li>
-                                    <li><a href="contactus.html">Liên hệ</a></li>
+                                    <li><a href="products.html">Sách bán chạy     </a></li>
+                                    <li><a href="products.html">Sách đang giảm giá     </a></li>
+                                    <li><a href="contactus.html">Liên hệ   </a></li>
                                 </ul>
                             </div>
                         </nav>

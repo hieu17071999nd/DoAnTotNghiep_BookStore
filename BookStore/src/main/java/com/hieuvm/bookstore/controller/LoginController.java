@@ -40,6 +40,7 @@ public class LoginController {
             HttpSession session=request.getSession();
             session.setAttribute("customer",customer);
             session.setAttribute("num_item",itemService.getByCustomerId(customer.getId()).size());
+            session.setMaxInactiveInterval(10 * 60);
             return "redirect:/trang-chu";
         } else {
             request.setAttribute("msg", "Sai tên đăng nhập hoặc mật khẩu");

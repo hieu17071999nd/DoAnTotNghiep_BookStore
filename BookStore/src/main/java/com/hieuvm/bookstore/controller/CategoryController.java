@@ -32,7 +32,7 @@ public class CategoryController {
         return "admin/category_manage";
     }
 
-    @GetMapping("/add-category")
+    @GetMapping("/admin/add-category")
     public String addStaff(ModelMap modelMap) {
         modelMap.addAttribute("categories", categoryService.getAllCategoryParents());
         return "admin/category_add";

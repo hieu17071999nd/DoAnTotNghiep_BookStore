@@ -21,7 +21,7 @@ public class AdminController {
     @Autowired
     private StaffService staffService;
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
     public ModelAndView homePage() {
         ModelAndView mav = new ModelAndView("admin/home");
         return mav;
@@ -40,8 +40,8 @@ public class AdminController {
         if (staff != null) {
             if (staff.getStatus() == 1) {
                 HttpSession session=request.getSession();
-                session.setAttribute("staff", staff);
-                return "redirect:/admin";
+                session.setAttribute("username", username);
+                return "redirect:/admin/home";
             } else {
                 request.setAttribute("check", "Tài khoản không còn hiệu lực");
                 return "admin/login";
