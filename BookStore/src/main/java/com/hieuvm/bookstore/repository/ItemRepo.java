@@ -11,5 +11,7 @@ public interface ItemRepo extends JpaRepository<Item, Long> {
 
     Item getItemByProductId(Long productId);
 
-    List<Item> getAllByCustomerId(Long productId);
+    List<Item> getAllByCustomerId(Long customerId);
+
+    Item getAllByCustomerIdAndProductId(Long customerId, Long productId);
 }

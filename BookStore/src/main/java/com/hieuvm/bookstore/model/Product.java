@@ -40,6 +40,17 @@ public class Product extends BaseEntity {
     @Column(name = "STAFF_ID")
     private Long staffId;
 
+    @Column(name = "PRIORITY")
+    private Long priority;
+    /*
+     0: bình thường
+     1: nổi tiếng
+     2: sách mới
+     */
+
+    @Column(name = "SALE")
+    private Long sale;
+
     public String getName() {
         return name;
     }
@@ -94,5 +105,53 @@ public class Product extends BaseEntity {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
+    }
+
+    public Long getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Long priority) {
+        this.priority = priority;
+    }
+
+    public Long getSale() {
+        return sale;
+    }
+
+    public void setSale(Long sale) {
+        this.sale = sale;
     }
 }

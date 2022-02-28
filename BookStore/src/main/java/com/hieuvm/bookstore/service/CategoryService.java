@@ -17,6 +17,8 @@ public interface CategoryService {
 
     Category getById(Long id);
 
+    Category findAllByCode(String code);
+
     void deletePost(Long id);
 
     Category findOne(Long id);

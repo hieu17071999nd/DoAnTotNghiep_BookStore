@@ -92,6 +92,17 @@
                                         <label for="status0">Không hiệu lực</label><br>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-12 col-form-label">Độ nổi tiếng</label>
+                                    <div class="col-sm-8">
+                                        <input type="radio" id="priority0" name="priority" value="0">
+                                        <label for="priority0">Bình thường</label><br>
+                                        <input type="radio" id="priority1" name="priority" value="1">
+                                        <label for="priority1">Nổi tiếng</label><br>
+                                        <input type="radio" id="priority2" name="priority" value="2">
+                                        <label for="priority2">Sách mới</label><br>
+                                    </div>
+                                </div>
                                 <div class="text-end">
                                     <a href="<c:url value="/admin/product/get"/>" class="btn btn-primary">Trở lại</a>
                                     <input type="submit" class="btn btn-primary" value="Thêm">

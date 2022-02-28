@@ -1,12 +1,12 @@
 package com.hieuvm.bookstore.controller;
 
+import com.hieuvm.bookstore.model.OrderItem;
 import com.hieuvm.bookstore.model.Staff;
-import com.hieuvm.bookstore.service.CustomerService;
-import com.hieuvm.bookstore.service.ItemService;
-import com.hieuvm.bookstore.service.ProductService;
-import com.hieuvm.bookstore.service.StaffService;
+import com.hieuvm.bookstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -21,10 +22,14 @@ public class AdminController {
     @Autowired
     private StaffService staffService;
 
+    @Autowired
+    private OrderItemService orderItemService;
+
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
-    public ModelAndView homePage() {
-        ModelAndView mav = new ModelAndView("admin/home");
-        return mav;
+    public String homePage(ModelMap modelMap) {
+        List<OrderItem> orderItems = orderItemService.getAllByStatus(1L);
+        modelMap.addAttribute("numberOrderNew",orderItems.size());
+        return "admin/home";
     }
 
     @GetMapping("/admin/login")

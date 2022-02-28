@@ -12,7 +12,8 @@
 
     <!-- Login Section Begin -->
     <div class="register-login-section spad" style="padding-top: 100px; padding-left: 100px">
-        <div class="container">
+        <div class="container" style="margin-top: 100px">
+            <h3 style="align-content: center">Danh sách sản phẩm</h3>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart-table">
@@ -21,11 +22,11 @@
                             <tr>
                                 <th></th>
                                 <th>Ảnh</th>
-                                <th class="p-name">Sản phẩm</th>
+                                <th>Tên sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
-                                <th>Tiền</th>
-                                <th><i class="ti-close"></i></th>
+                                <th>Thành tiền</th>
+                                <th><i class="ti-close">Xóa</i></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -35,7 +36,7 @@
                                     <td><input style="margin-left: 20px;" type="checkbox" class="form-check-input" id="${item.id}"/></td>
                                     <td class="cart-pic first-row"><img width="100" src="<c:url value="/resources/images/product/${item.image}"/>" alt=""></td>
                                     <td class="cart-title first-row">
-                                        <a href="<c:url value="/sanpham/${item.productId}"/>">
+                                        <a href="<c:url value="/product/${item.productId}"/>">
                                             <h5>${item.name}</h5>
                                         </a>
 <%--                                        <h6>Size:${item.detailProduct.size},Màu:${item.detailProduct.color}</h6>--%>
@@ -53,7 +54,7 @@
                                     <input id="money1${item.id}" type="hidden" value="${item.itemMoney}">
                                     <td id="money${item.id}" class="total-price first-row"></td>
                                     <td class="close-td first-row">
-                                        <a class="btn btn-outline-dark" href="<c:url value="/delete-item/${item.id}"/>"><i class="ti-close"></i></a>
+                                        <a class="btn btn-outline-dark" href="<c:url value="/delete-item/${item.id}"/>"><i class="ti-close">x</i></a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -72,6 +73,7 @@
                                     <input id="total_money1" type="hidden"/>
                                     <li class="cart-total">Tổng tiền <span id="total_money"></span></li>
                                 </ul>
+                                <br>
                                 <button id="checkout" class="proceed-btn">Mua ngay</button>
                             </div>
                         </div>
@@ -119,17 +121,17 @@
             });
             var totalMoney=0;
             <c:forEach items="${items}" var="item">
-            $('#${item.id}').click(function (){
-                if(this.checked){
-                    totalMoney+=parseInt($('#money1${item.id}').val());
+                $('#${item.id}').click(function (){
+                    if(this.checked){
+                        totalMoney+=parseInt($('#money1${item.id}').val());
 
-                }else {
-                    totalMoney-=parseInt($('#money1${item.id}').val());
-                }
-                $("#total_money1").val(totalMoney);
-                var show=$("#total_money1").val();
-                $("#total_money").text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(show));
-            });
+                    }else {
+                        totalMoney-=parseInt($('#money1${item.id}').val());
+                    }
+                    $("#total_money1").val(totalMoney);
+                    var show=$("#total_money1").val();
+                    $("#total_money").text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(show));
+                });
             </c:forEach>
             $("#checkout").click(function (){
                 var listChecked=new Array();

@@ -60,7 +60,7 @@
                                 <ul class="tg-contactinfo">
                                     <li>
                                         <i class="icon-apartment"></i>
-                                        <address>Suit # 07, Rose world Building, Street # 02, AT246T Manchester</address>
+                                        <address>Ngõ Tự do, đường Trần Đại Nghĩa, Số 55, đường Giải Phóng</address>
                                     </li>
                                 </ul>
                             </div>
@@ -71,8 +71,7 @@
                                     <li>
                                         <i class="icon-phone-handset"></i>
                                         <span>
-                                                      <em>0800 12345 - 678 - 89</em>
-                                                      <em>+4 1234 - 4567 - 67</em>
+                                                      <em>+8497 1547 - 695</em>
                                                   </span>
                                     </li>
                                 </ul>
@@ -83,7 +82,7 @@
                                 <ul class="tg-contactinfo">
                                     <li>
                                         <i class="icon-clock"></i>
-                                        <span>Serving 7 Days A Week From 9am - 5pm</span>
+                                        <span>Phục vụ từ 8h - 18h</span>
                                     </li>
                                 </ul>
                             </div>
@@ -94,8 +93,8 @@
                                     <li>
                                         <i class="icon-envelope"></i>
                                         <span>
-                                                      <em><a href="mailto:support@domain.com">support@domain.com</a></em>
-                                                      <em><a href="mailto:info@domain.com">info@domain.com</a></em>
+                                                      <em><a href="mailto:support@domain.com">hieumv99nd@gmail.com</a></em>
+                                                      <em><a href="mailto:info@domain.com">hieu79862@gmail.com</a></em>
                                                   </span>
                                     </li>
                                 </ul>
@@ -105,24 +104,24 @@
                 </div>
             </div>
         </div>
-        <div class="tg-newsletter">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        <h4>Signup Newsletter!</h4>
-                        <h5>Consectetur adipisicing elit sed do eiusmod tempor incididunt.</h5>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        <form class="tg-formtheme tg-formnewsletter">
-                            <fieldset>
-                                <input type="email" name="email" class="form-control" placeholder="Enter Your Email ID">
-                                <button type="button"><i class="icon-envelope"></i></button>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+<%--        <div class="tg-newsletter">--%>
+<%--            <div class="container">--%>
+<%--                <div class="row">--%>
+<%--                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">--%>
+<%--                        <h4>Signup Newsletter!</h4>--%>
+<%--                        <h5>Consectetur adipisicing elit sed do eiusmod tempor incididunt.</h5>--%>
+<%--                    </div>--%>
+<%--                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">--%>
+<%--                        <form class="tg-formtheme tg-formnewsletter">--%>
+<%--                            <fieldset>--%>
+<%--                                <input type="email" name="email" class="form-control" placeholder="Enter Your Email ID">--%>
+<%--                                <button type="button"><i class="icon-envelope"></i></button>--%>
+<%--                            </fieldset>--%>
+<%--                        </form>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
         <div class="tg-footerbar">
             <a id="tg-btnbacktotop" class="tg-btnbacktotop" href="javascript:void(0);"><i class="icon-chevron-up"></i></a>
             <div class="container">

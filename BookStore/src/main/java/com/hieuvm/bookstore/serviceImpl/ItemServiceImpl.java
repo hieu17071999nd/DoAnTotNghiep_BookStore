@@ -26,6 +26,10 @@ public class ItemServiceImpl implements ItemService {
         return itemRepo.getAllByCustomerId(customerId);
     }
 
+    public Item getAllByCustomerIdAndProductId(Long customerId, Long productId) {
+        return itemRepo.getAllByCustomerIdAndProductId(customerId, productId);
+    }
+
     public Boolean insert(Item item) {
         itemRepo.save(item);
         return true;

@@ -10,6 +10,8 @@ public interface ItemService {
 
     List<Item> getByCustomerId(Long customerId);
 
+    Item getAllByCustomerIdAndProductId(Long customerId, Long productId);
+
     Boolean insert(Item item);
 
     Item getById(Long id);

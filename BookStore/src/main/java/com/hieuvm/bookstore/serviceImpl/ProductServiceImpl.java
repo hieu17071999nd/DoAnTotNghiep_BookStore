@@ -26,6 +26,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepo.findAllByCategoryId(categoryId);
     }
 
+    public List<Product> findAllByCategoryIdAndStatus(Long categoryId, Long status) {
+        return productRepo.findAllByCategoryIdAndStatus(categoryId, status);
+    }
+
     public Boolean insert(Product product) {
         productRepo.save(product);
         return true;

@@ -36,27 +36,49 @@ public class AjaxController {
     @Autowired
     private CustomerService customerService;
 
+    /*
+    Status của Item:
+    1: Đang ở trong giỏ hàng của khách hàng
+    2. Khách hàng đã đặt hàng chờ đợi được admin duyệt đơn hàng
+    3. Đơn hàng được duyệt chờ đợi shipper giao hàng
+     */
+
+    @RequestMapping("/delete-item/{id}")
+    public String addCart(HttpServletRequest request, @PathVariable("id") Long id){
+        itemService.deleteItem(id);
+        return "redirect:/giohang";
+    }
+
     @RequestMapping("/add-cart")
     @ResponseBody
     public String addCart(HttpServletRequest request){
-         Long productId= Long.parseLong(request.getParameter("productId"));
+        Long productId= Long.parseLong(request.getParameter("productId"));
         Product product= productService.getById(productId);
         Long customerId= Long.parseLong(request.getParameter("customerId"));
         Long n= Long.parseLong(request.getParameter("n"));
-        Item item=new Item();
-        item.setNumber(n);
-        item.setName(product.getName());
-        item.setImage(product.getImage());
-        item.setPrice(product.getPrice());
-        item.setCustomerId(customerId);
-        item.setProductId(productId);
-        boolean check=itemService.insert(item);
-        if(check){
-            HttpSession session=request.getSession();
-            session.setAttribute("num_item",itemService.getByCustomerId(customerId).size());
+
+        //kiem tra xem san pham co trong gio hang hay chua
+        Item itemCheck = itemService.getAllByCustomerIdAndProductId(customerId, productId);
+        if (itemCheck != null) {
+            itemCheck.setNumber(itemCheck.getNumber() + n);
+            itemService.save(itemCheck);
             return "true";
-        }else {
-            return "false";
+        } else {
+            Item item=new Item();
+            item.setNumber(n);
+            item.setName(product.getName());
+            item.setImage(product.getImage());
+            item.setPrice(product.getPrice());
+            item.setCustomerId(customerId);
+            item.setProductId(productId);
+            boolean check=itemService.insert(item);
+            if(check){
+                HttpSession session=request.getSession();
+                session.setAttribute("num_item",itemService.getByCustomerId(customerId).size());
+                return "true";
+            }else {
+                return "false";
+            }
         }
     }
 
@@ -96,35 +118,6 @@ public class AjaxController {
 //        }
 //    }
 //
-    @RequestMapping("/get-list-district")
-    @ResponseBody
-    public String getListDistrict(HttpServletRequest request){
-        String provinceId= request.getParameter("provinceId");
-        List<District> districts=addressService.getDistrictByProvince(provinceId);
-        ObjectMapper mapper=new ObjectMapper();
-        String ajaxResponse="";
-        try {
-            ajaxResponse=mapper.writeValueAsString(districts);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ajaxResponse;
-    }
-
-    @RequestMapping("/get-list-ward")
-    @ResponseBody
-    public String getListWard(HttpServletRequest request){
-        String districtId= request.getParameter("districtId");
-        List<Ward> wards=addressService.getWardByDistrict(districtId);
-        ObjectMapper mapper=new ObjectMapper();
-        String ajaxResponse="";
-        try {
-            ajaxResponse=mapper.writeValueAsString(wards);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return ajaxResponse;
-    }
 
     @GetMapping("/getSelectedItem")
     @ResponseBody
@@ -163,10 +156,12 @@ public class AjaxController {
         }
         Bill bill = new Bill();
         bill.setCustomerId(customerId);
-        bill.setDeliveryAddress(address);
-        bill.setNumerOrderItem(Long.valueOf(items.size()));
+        bill.setDeliveryAddress(address); //dia chi giao hang
+        bill.setNumerOrderItem(Long.valueOf(items.size())); // so san pham mua
         bill.setTotal(totalNumber);
+        bill.setCreateDate(new java.util.Date());
         Boolean a = billService.insert(bill);
+
         for (Item item : items) {
             OrderItem orderItem = new OrderItem();
             orderItem.setBillId(bill.getId());
@@ -176,13 +171,15 @@ public class AjaxController {
             orderItem.setNumber(item.getNumber());
             orderItem.setPrice(item.getPrice());
             orderItem.setCustomerId(item.getCustomerId());
+            orderItem.setStatus(1L);
+            orderItem.setCreateDate(new java.util.Date());
             orderItemService.insert(orderItem);
             if (item.getId() != null) {
                 itemService.deleteItem(item.getId());
             }
-            Product product = productService.getById(item.getProductId());
-            product.setQuantily(product.getQuantily() - orderItem.getNumber());
-            productService.save(product);
+//            Product product = productService.getById(item.getProductId());
+//            product.setQuantily(product.getQuantily() - orderItem.getNumber());
+//            productService.save(product);
         }
         if (bill.getId() != 0) {
             session.setAttribute("num_item", itemService.getByCustomerId(customerId).size());
@@ -196,6 +193,36 @@ public class AjaxController {
             redirectAttributes.addFlashAttribute("msg", "Đặt hàng thất bại");
         }
         return "redirect:/thanh-toan";
+    }
+
+    @RequestMapping("/get-list-district")
+    @ResponseBody
+    public String getListDistrict(HttpServletRequest request){
+        String provinceId= request.getParameter("provinceId");
+        List<District> districts=addressService.getDistrictByProvince(provinceId);
+        ObjectMapper mapper=new ObjectMapper();
+        String ajaxResponse="";
+        try {
+            ajaxResponse=mapper.writeValueAsString(districts);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return ajaxResponse;
+    }
+
+    @RequestMapping("/get-list-ward")
+    @ResponseBody
+    public String getListWard(HttpServletRequest request){
+        String districtId= request.getParameter("districtId");
+        List<Ward> wards=addressService.getWardByDistrict(districtId);
+        ObjectMapper mapper=new ObjectMapper();
+        String ajaxResponse="";
+        try {
+            ajaxResponse=mapper.writeValueAsString(wards);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return ajaxResponse;
     }
 
 }

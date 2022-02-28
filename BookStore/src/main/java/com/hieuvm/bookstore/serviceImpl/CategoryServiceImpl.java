@@ -41,6 +41,10 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepo.getById(id);
     }
 
+    public Category findAllByCode(String code) {
+        return categoryRepo.findAllByCode(code);
+    }
+
     public void deletePost(Long id) {
         categoryRepo.deleteById(id);
     }

@@ -17,7 +17,7 @@ public class BaseQueryRepo {
     private EntityManager em;
 
     public List<Product> getProductHot() {
-        StringBuilder sql = new StringBuilder(" SELECT * FROM product WHERE STATUS = 1 AND QUANTITY > 1 ");
+        StringBuilder sql = new StringBuilder(" SELECT * FROM product WHERE STATUS = 1 AND PRIORITY = 1 ");
         Query query = em.createNativeQuery(sql.toString(), Product.class);
         List<Product> productList = query.getResultList();
         if (productList == null) {
@@ -26,8 +26,30 @@ public class BaseQueryRepo {
         return productList;
     }
 
+    public List<Product> getProductNew() {
+        StringBuilder sql = new StringBuilder(" SELECT * FROM product WHERE STATUS = 1 AND PRIORITY = 2 ");
+        Query query = em.createNativeQuery(sql.toString(), Product.class);
+        List<Product> productList = query.getResultList();
+        if (productList == null) {
+            return new ArrayList<>();
+        }
+        return productList;
+    }
+
+    public List<Product> getProductRelative(Long categoryId, Long productId) {
+        StringBuilder sql = new StringBuilder(" SELECT * FROM product WHERE STATUS = 1 AND CATEGORY_ID = :categoryId and ID != :productId");
+        Query query = em.createNativeQuery(sql.toString(), Product.class);
+        query.setParameter("categoryId", categoryId);
+        query.setParameter("productId", productId);
+        List<Product> productList = query.getResultList();
+        if (productList == null) {
+            return new ArrayList<>();
+        }
+        return productList;
+    }
+
     public List<Category> getAllCategoryParents() {
-        StringBuilder sql = new StringBuilder(" SELECT * FROM category WHERE STATUS = 1 AND type = 'root_type' and code != 'SGK' and code != 'STK' ");
+        StringBuilder sql = new StringBuilder(" SELECT * FROM category WHERE STATUS = 1 AND type = 'root_type' and code != 'SGK' and code != 'STK' and code != 'SACHLUYENTHITHPT'");
         Query query = em.createNativeQuery(sql.toString(), Category.class);
         List<Category> categoryList = query.getResultList();
         if (categoryList == null) {

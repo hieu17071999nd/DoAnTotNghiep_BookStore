@@ -5,11 +5,17 @@
 
   <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration" >
     <!-- Database configurations -->
+<!--    <property name="databaseType" value="h2" />-->
+<!--    <property name="jdbcUrl" value="jdbc:h2:tcp://localhost/activiti" />-->
+<!--    <property name="jdbcDriver" value="org.h2.Driver" />-->
+<!--    <property name="jdbcUsername" value="sa" />-->
+<!--    <property name="jdbcPassword" value="" />-->
+
     <property name="databaseType" value="h2" />
-    <property name="jdbcUrl" value="jdbc:h2:tcp://localhost/activiti" />
-    <property name="jdbcDriver" value="org.h2.Driver" />
-    <property name="jdbcUsername" value="sa" />
-    <property name="jdbcPassword" value="" />
+    <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/book_store3" />
+    <property name="jdbcDriver" value="com.mysql.jdbc.Driver" />
+    <property name="jdbcUsername" value="root" />
+    <property name="jdbcPassword" value="1999" />
 
     <property name="mailServerPort" value="1025"/>
     

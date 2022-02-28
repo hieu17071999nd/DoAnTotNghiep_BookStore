@@ -32,4 +32,10 @@ public class ProcessController {
 		processService.completeTask(taskId);
 		return "Task with id " + taskId + " has been completed!";
 	}
+
+	@RequestMapping(value = "/getXMLOrder")
+	public String getXMLOrder(@RequestParam String taskId) {
+		processService.completeTask(taskId);
+		return "Task with id " + taskId + " has been completed!";
+	}
 }

@@ -10,6 +10,8 @@ public interface ProductService {
 
     List<Product> findAllByCategoryId(Long categoryId);
 
+    List<Product> findAllByCategoryIdAndStatus(Long categoryId, Long status);
+
     Boolean insert(Product product);
 
     Product getById(Long id);
