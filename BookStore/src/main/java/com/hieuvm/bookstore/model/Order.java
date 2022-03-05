@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "BILL")
-public class Bill extends BaseEntity {
+@Table(name = "ORDERS")
+public class Order extends BaseEntity {
 
     @Column(name = "CUSTOMER_ID")
     private Long customerId;

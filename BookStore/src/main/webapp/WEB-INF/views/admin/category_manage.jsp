@@ -39,7 +39,7 @@
                             <p style="color:red;">${msg}</p>
                             <div class="table-title">
                                 <div class="row">
-                                    <div class="col-sm-8"><h2>Loại sản phẩm</h2></div>
+                                    <div class="col-sm-8"><h2>Thể loại</h2></div>
                                     <div class="col-sm-4">
                                         <a href="<c:url value="/admin/add-category"/>" class="btn btn-info add-new" style="float: right">
                                             <i class="fa fa-plus"></i> Thêm mới</a>

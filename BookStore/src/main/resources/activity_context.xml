@@ -1,0 +1,70 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemalocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://cxf.apache.org/policy http://cxf.apache.org/schemas/policy.xsd">
+
+      <!--    <bean id="jobManager" class="con.viettel.fw.activiti.SpringJobManager"></bean>-->
+      <bean name="processEngineConfiguration" id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+            <property name="xmlEncoding" value="UTF-8"/>
+            <property name="databaseType" value="mysql"/>
+            <property name="dataSource" ref="dataSource"/>
+            <property name="transactionManager" ref="transactionNanager"/>
+            <property name="databaseTablePrefix" value="V2_"/>
+            <property name="databaseSchemaUpdate" value="false"/>
+            <property name="enableDatabaseEventLogging" value="true"/>
+            <property name="history" value="audit"/>
+            <!--https://stackoverflow.com/questions/44263068/migration-from-5-22-0-to-6-0-0-jobexecutoractivate-flag-nissing-->
+            <property name="asyncExecutor" ref="asyncJobExecutor"/>
+            <property name="asyncExecutorActivate" value="true"/>
+<!--            <property name="asyncExecutorNumberOfRetries" value="0"/>-->
+<!--            <property name="jobManager" ref="jobManager"/>-->
+
+            <!--Cau hinh email -->
+<!--            <property name="mailServerHost" value="smtp.yiettel.com.vn"/>-->
+<!--            <property name="mailServerPort" value="465"/>-->
+<!--            <property name="mailServerUsername" value="bccs.im2"/>-->
+<!--            <property name="mailServerPassword" value="!WIbXLq4r$J"/>-->
+            <property name="mailServerDefaultFrom" value="hieumv99nd@gmail.com"/>
+            <!--<property name="mailServerUseSSL" value="true"/>-->
+<!--            <property name="mailServerUseTLS" value="false"/>-->
+
+      </bean>
+
+      <bean id="asyncJobExecutor" class="org.activiti.engine.impl.asyncexecutor.DefaultAsyncJobExecutor">
+            <property name="maxAsyncJobsDuePerAcquisition" value="5"/>
+            <property name="corePoolSize" value="100"/>
+            <property name="maxPoolSize" value="100"/>
+            <property name="queueSize" value="100"/>
+            <property name="keepAliveTime" value="300000"/>
+            <property name="defaultTimerJobAcquireWaitTimeInMillis" value="10000"/>
+            <property name="defaultAsyncJobAcquireWaitTimeInMillis" value="10000"/>
+            <property name="maxTimer JobsPerAcquisition" value="10"/>
+<!--            <property name="resetExpiredJobsInterval" value="60000"/>-->
+            <property name="asyncJobLockTimeInMillis" value="600000"/>
+            <property name="timerLockTimeInMillis" value="600000"/>
+      </bean>
+
+      <bean primary="true" id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+            <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+      </bean>
+
+      <bean primary="true" id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+            <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+      </bean>
+
+      <bean primary="true" id="repositoryService" factory-bean="processEngine"
+            factory-method="getRepositoryService"/>
+      <bean primary="true" id="runtimeService" factory-bean="processEngine"
+            factory-method="getRuntimeService"/>
+      <bean primary="true" id="taskService" factory-bean="processEngine"
+            factory-method="getTaskService"/>
+      <bean primary="true" id="historyService" factory-bean="processEngine"
+            factory-method="getHistoryService"/>
+      <bean primary="true" id="managementService" factory-bean="processEngine"
+            factory-method="getManagementService"/>
+<!--      <bean primary="true" id="activitiRule" class="org.activiti.engine.test.ActivitiRule">-->
+<!--            <property name="processEngine" ref="processEngine"/>&ndash;&gt;-->
+<!--      </bean>-->
+
+</beans>

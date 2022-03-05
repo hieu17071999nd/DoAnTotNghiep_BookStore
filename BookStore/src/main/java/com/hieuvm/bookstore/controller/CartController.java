@@ -1,5 +1,6 @@
 package com.hieuvm.bookstore.controller;
 
+import com.hieuvm.bookstore.DTO.ItemDto;
 import com.hieuvm.bookstore.model.*;
 import com.hieuvm.bookstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,7 +32,7 @@ public class CartController {
     private AddressService addressService;
 
     @Autowired
-    private BillService billService;
+    private OrderService billService;
 
     @Autowired
     private OrderItemService orderItemService;
@@ -82,7 +84,17 @@ public class CartController {
         Customer customer = (Customer) session.getAttribute("customer");
         List<Item> items = itemService.getByCustomerId(customer.getId());
         session.setAttribute("num_item", items.size());
-        modelMap.addAttribute("items", items);
+
+        List<ItemDto> itemDtos = new ArrayList<>();
+        for (Item item : items) {
+            ItemDto itemDto = new ItemDto();
+            itemDto.setItem(item);
+            itemDto.setCustomer(customer);
+            Product product = productService.getById(item.getProductId());
+            itemDto.setProduct(product);
+            itemDtos.add(itemDto);
+        }
+        modelMap.addAttribute("itemDtos", itemDtos);
         return "web/cart";
     }
 

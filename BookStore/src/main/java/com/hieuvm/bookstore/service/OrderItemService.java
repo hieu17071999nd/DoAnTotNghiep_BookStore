@@ -13,7 +13,7 @@ public interface OrderItemService {
 
     List<OrderItem> getAllOrderItem();
 
-    List<OrderItem> getAllOrderItemByBillId(Long billId);
+    List<OrderItem> getAllOrderItemByOrderId(Long orderId);
 
     List<OrderItem> getAllByStatus(Long status);
 

@@ -88,7 +88,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value="/admin/product/get"/>">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-address-book"></i>
                         <p>
                             Quản lý sản phẩm
                         </p>
@@ -96,17 +96,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value="/admin/order/get"/>">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-book-open"></i>
                         <p>
                             Quản lý đơn hàng
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<c:url value="/admin/bill/get"/>">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Quản lý hóa đơn
                         </p>
                     </a>
                 </li>

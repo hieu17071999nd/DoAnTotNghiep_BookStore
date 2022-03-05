@@ -2,6 +2,7 @@ package com.hieuvm.bookstore.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hieuvm.bookstore.DTO.ItemDto;
 import com.hieuvm.bookstore.model.*;
 import com.hieuvm.bookstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class AjaxController {
     private AddressService addressService;
 
     @Autowired
-    private BillService billService;
+    private OrderService billService;
 
     @Autowired
     private OrderItemService orderItemService;
@@ -66,9 +67,9 @@ public class AjaxController {
         } else {
             Item item=new Item();
             item.setNumber(n);
-            item.setName(product.getName());
-            item.setImage(product.getImage());
-            item.setPrice(product.getPrice());
+//            item.setName(product.getName());
+//            item.setImage(product.getImage());
+//            item.setPrice(product.getPrice());
             item.setCustomerId(customerId);
             item.setProductId(productId);
             boolean check=itemService.insert(item);
@@ -89,56 +90,52 @@ public class AjaxController {
         Long customerId= Long.parseLong(request.getParameter("customerId"));
         Long n= Long.parseLong(request.getParameter("n"));
         Product product= productService.getById(productId);
+        Customer customer = customerService.getById(customerId);
+
         Item item=new Item();
         item.setProductId(productId);
-        item.setName(product.getName());
-        item.setImage(product.getImage());
+//        item.setName(product.getName());
+//        item.setImage(product.getImage());
         item.setNumber(n);
-        item.setPrice(product.getPrice());
+//        item.setPrice(product.getPrice());
         item.setCustomerId(customerId);
-        List<Item> items=new ArrayList<>();
-        items.add(item);
+        List<ItemDto> itemDtos=new ArrayList<>();
+        ItemDto itemDto = new ItemDto();
+        itemDto.setItem(item);
+        itemDto.setProduct(product);
+        itemDto.setCustomer(customer);
+        itemDtos.add(itemDto);
         HttpSession session=request.getSession();
-        session.setAttribute("items",items);
+        session.setAttribute("itemDtos",itemDtos);
         return "ok";
     }
-//
-//    @RequestMapping("/update-cart")
-//    @ResponseBody
-//    public String updateteCart(HttpServletRequest request){
-//        int itemId= Integer.parseInt(request.getParameter("itemId"));
-//        int number= Integer.parseInt(request.getParameter("number"));
-//        Item item=itemService.getById(itemId);
-//        item.setNumber(number);
-//        boolean check=itemService.update(item);
-//        if(check){
-//            return "true";
-//        }else {
-//            return "false";
-//        }
-//    }
-//
 
     @GetMapping("/getSelectedItem")
     @ResponseBody
     public String getSelectedItem(HttpServletRequest request, @RequestParam("listChecked[]") List<Integer> a){
-        List<Item> items=new ArrayList<>();
+        HttpSession session=request.getSession();
+        Customer customer = (Customer) session.getAttribute("customer");
+        List<ItemDto> itemDtos=new ArrayList<>();
         for (int i = 0; i < a.size(); i++) {
             Long itemId = Long.valueOf(a.get(i));
             Item item=itemService.getById(itemId);
-            items.add(item);
+            Product product = productService.getById(item.getProductId());
+            ItemDto itemDto = new ItemDto();
+            itemDto.setItem(item);
+            itemDto.setProduct(product);
+            itemDto.setCustomer(customer);
+            itemDtos.add(itemDto);
         }
-        HttpSession session=request.getSession();
-        session.setAttribute("items",items);
+        session.setAttribute("itemDtos",itemDtos);
         return "";
     }
 
     @GetMapping("/thanh-toan")
     public String checkout(HttpServletRequest request, ModelMap modelMap) {
         HttpSession session = request.getSession();
-        List<Item> items = (List<Item>) session.getAttribute("items");
+        List<ItemDto> itemDtos = (List<ItemDto>) session.getAttribute("itemDtos");
         Customer customer = (Customer) session.getAttribute("customer");
-        modelMap.addAttribute("items", items);
+        modelMap.addAttribute("itemDtos", itemDtos);
         modelMap.addAttribute("customer", customer);
         modelMap.addAttribute("provinces", addressService.getAllProvince());
         return "web/checkout";
@@ -149,41 +146,42 @@ public class AjaxController {
         Long customerId = Long.parseLong(request.getParameter("customer_id"));
         String address = request.getParameter("address");
         HttpSession session = request.getSession();
-        List<Item> items = (List<Item>) session.getAttribute("items");
+        List<ItemDto> itemDtos = (List<ItemDto>) session.getAttribute("itemDtos");
         Long totalNumber = 0L;
-        for (Item item : items) {
-            totalNumber += item.getNumber() * item.getPrice();
+        for (ItemDto itemDto : itemDtos) {
+            totalNumber += itemDto.getItem().getNumber() * itemDto.getProduct().getPrice();
         }
-        Bill bill = new Bill();
-        bill.setCustomerId(customerId);
-        bill.setDeliveryAddress(address); //dia chi giao hang
-        bill.setNumerOrderItem(Long.valueOf(items.size())); // so san pham mua
-        bill.setTotal(totalNumber);
-        bill.setCreateDate(new java.util.Date());
-        Boolean a = billService.insert(bill);
+        Order order = new Order();
+        order.setCustomerId(customerId);
+        order.setDeliveryAddress(address); //dia chi giao hang
+        order.setNumerOrderItem(Long.valueOf(itemDtos.size())); // so san pham mua
+        order.setTotal(totalNumber);
+        order.setStatus(1L);
+        order.setCreateDate(new java.util.Date());
+        Boolean a = billService.insert(order);
 
-        for (Item item : items) {
+        for (ItemDto itemDto : itemDtos) {
             OrderItem orderItem = new OrderItem();
-            orderItem.setBillId(bill.getId());
-            orderItem.setProductId(item.getProductId());
-            orderItem.setName(item.getName());
-            orderItem.setImage(item.getImage());
-            orderItem.setNumber(item.getNumber());
-            orderItem.setPrice(item.getPrice());
-            orderItem.setCustomerId(item.getCustomerId());
+            orderItem.setOrderId(order.getId());
+            orderItem.setProductId(itemDto.getItem().getProductId());
+            orderItem.setName(itemDto.getProduct().getName());
+            orderItem.setImage(itemDto.getProduct().getImage());
+            orderItem.setNumber(itemDto.getItem().getNumber());
+            orderItem.setPrice(itemDto.getProduct().getPrice());
+            orderItem.setCustomerId(itemDto.getItem().getCustomerId());
             orderItem.setStatus(1L);
             orderItem.setCreateDate(new java.util.Date());
             orderItemService.insert(orderItem);
-            if (item.getId() != null) {
-                itemService.deleteItem(item.getId());
+            if (itemDto.getItem().getId() != null) {
+                itemService.deleteItem(itemDto.getItem().getId());
             }
 //            Product product = productService.getById(item.getProductId());
 //            product.setQuantily(product.getQuantily() - orderItem.getNumber());
 //            productService.save(product);
         }
-        if (bill.getId() != 0) {
+        if (order.getId() != 0) {
             session.setAttribute("num_item", itemService.getByCustomerId(customerId).size());
-            session.removeAttribute("items");
+            session.removeAttribute("itemDtos");
             redirectAttributes.addFlashAttribute("msg", "Đặt hàng thành công");
 //            String subject = "Xác nhận đơn hàng";
 //            String content = "Chào " + customer.getName() + ".Bạn vừa đặt 1 đơn hàng trên Fashi Shop." +
@@ -224,5 +222,22 @@ public class AjaxController {
         }
         return ajaxResponse;
     }
+
+    //
+//    @RequestMapping("/update-cart")
+//    @ResponseBody
+//    public String updateteCart(HttpServletRequest request){
+//        int itemId= Integer.parseInt(request.getParameter("itemId"));
+//        int number= Integer.parseInt(request.getParameter("number"));
+//        Item item=itemService.getById(itemId);
+//        item.setNumber(number);
+//        boolean check=itemService.update(item);
+//        if(check){
+//            return "true";
+//        }else {
+//            return "false";
+//        }
+//    }
+//
 
 }

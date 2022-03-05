@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class BookStoreApplication {
+//    @ImportResource("classpath:activity_context.xml")
 //    @ImportResource("classpath:activiti_cfg.xml")
 
     public static void main(String[] args) {

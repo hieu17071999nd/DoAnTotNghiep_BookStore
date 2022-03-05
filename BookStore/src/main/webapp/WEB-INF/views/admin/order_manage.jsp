@@ -49,11 +49,14 @@
                                 <thead>
                                 <tr>
                                     <th>Stt</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Số lượng</th>
-                                    <th>Giá sản phẩm</th>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Mã khách hàng</th>
+                                    <th>Số sản phẩm mua</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Địa chỉ giao hàng</th>
                                     <th>Trạng thái</th>
                                     <th>Hành động</th>
+                                    <th>Chi tiết đơn hàng</th>
 <%--                                    <th>Xem luồng đơn hàng</th>--%>
                                 </tr>
                                 </thead>
@@ -61,35 +64,39 @@
                                 <%
                                     int stt = (int) request.getAttribute("page_id");
                                 %>
-                                <c:forEach items="${orderItems}" var="orderItem">
+                                <c:forEach items="${orders}" var="order">
                                     <tr>
                                         <td><%=stt%></td>
-                                        <td>${orderItem.name}</td>
-                                        <td>${orderItem.number}</td>
-                                        <td>${orderItem.price}</td>
+                                        <td>${order.id}</td>
+                                        <td>${order.customerId}</td>
+                                        <td>${order.numerOrderItem}</td>
+                                        <td>${order.total}</td>
+                                        <td>${order.deliveryAddress}</td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${orderItem.status == 1}">
+                                                <c:when test="${order.status == 1}">
                                                     <c:out value="Đã đặt hàng"/>
                                                 </c:when>
-                                                <c:when test="${orderItem.status == 0}">
+                                                <c:when test="${order.status == 0}">
                                                     <c:out value="Không hiệu lực"/>
                                                 </c:when>
                                             </c:choose>
                                         </td>
                                         <td>
-                                            <a href="<c:url value="/process"/>" title="Duyệt đơn hàng">
+                                            <a href="<c:url value="/approve/${order.id}"/>" title="Duyệt đơn hàng">
                                                 <i class="fas fa-key"></i>
                                             </a>
-                                            <a href="<c:url value="/getXMLOrder"/>" title="Xem luồng đơn hàng">
+                                            <a href="<c:url value="/getXMLOrder/${order.id}"/>" title="Xem luồng đơn hàng">
+                                                <i class="fas fa-project-diagram"></i>
+                                            </a>
+                                            <a href="<c:url value="/cancle/${order.id}"/>" class="delete" title="Hủy đơn hàng"><i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="<c:url value="/admin/order/${order.id}"/>" title="Chi tiết đơn hàng">
                                                 <i class="fas fa-info-circle"></i>
                                             </a>
                                         </td>
-<%--                                        <td>--%>
-<%--                                            <a href="<c:url value="/getXMLOrder"/>" title="Xem luồng đơn hàng">--%>
-<%--                                                <i class="fas fa-info-circle"></i>--%>
-<%--                                            </a>--%>
-<%--                                        </td>--%>
                                     </tr>
                                     <%
                                         stt++;

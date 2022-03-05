@@ -1,8 +1,8 @@
 package com.hieuvm.bookstore.controller;
 
-import com.hieuvm.bookstore.DTO.BillDto;
+import com.hieuvm.bookstore.DTO.OrderDto;
 import com.hieuvm.bookstore.model.*;
-import com.hieuvm.bookstore.service.BillService;
+import com.hieuvm.bookstore.service.OrderService;
 import com.hieuvm.bookstore.service.CustomerService;
 import com.hieuvm.bookstore.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 public class BillController {
 
     @Autowired
-    private BillService billService;
+    private OrderService orderService;
 
     @Autowired
     private OrderItemService orderItemService;
@@ -25,30 +25,30 @@ public class BillController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping(value = "/admin/bill/get", method = RequestMethod.GET)
-    public String getBill(ModelMap modelMap){
-        List<BillDto> billDTOS = new ArrayList<>();
-        List<Bill> billList =billService.getAllBill();
-        for (Bill bill : billList) {
-            Customer customer = customerService.getById(bill.getCustomerId());
-            List<OrderItem> orderItemList = orderItemService.getAllOrderItemByBillId(bill.getId());
-            BillDto billDTO = new BillDto(bill, customer, orderItemList);
-            billDTOS.add(billDTO);
-        }
-        modelMap.addAttribute("bills",billDTOS);
-        int numPage= (int) Math.ceil((double) billDTOS.size()/2);
-        modelMap.addAttribute("num_page",numPage);
-        modelMap.addAttribute("page_id",1);
-        return "admin/bill_manage";
-    }
-
-    @GetMapping("/admin/bill/{billId}")
-    public String getDetail(@PathVariable("billId") Long billId, ModelMap modelMap){
-        Bill bill= billService.getById(billId);
-        Customer customer = customerService.getById(bill.getCustomerId());
-        List<OrderItem> orderItemList = orderItemService.getAllOrderItemByBillId(bill.getId());
-        BillDto billDTO = new BillDto(bill, customer, orderItemList);
-        modelMap.addAttribute("bill",billDTO);
-        return "admin/bill_detail";
-    }
+//    @RequestMapping(value = "/admin/bill/get", method = RequestMethod.GET)
+//    public String getBill(ModelMap modelMap){
+//        List<OrderDto> orderDtos = new ArrayList<>();
+//        List<Order> orderList =orderService.getAllOrder();
+//        for (Order order : orderList) {
+//            Customer customer = customerService.getById(order.getCustomerId());
+//            List<OrderItem> orderItemList = orderItemService.getAllOrderItemByBillId(order.getId());
+//            OrderDto billDTO = new OrderDto(order, customer, orderItemList);
+//            orderDtos.add(billDTO);
+//        }
+//        modelMap.addAttribute("orderDtos",orderDtos);
+//        int numPage= (int) Math.ceil((double) orderDtos.size()/2);
+//        modelMap.addAttribute("num_page",numPage);
+//        modelMap.addAttribute("page_id",1);
+//        return "admin/bill_manage";
+//    }
+//
+//    @GetMapping("/admin/bill/{orderId}")
+//    public String getDetail(@PathVariable("orderId") Long orderId, ModelMap modelMap){
+//        Order order= orderService.getById(orderId);
+//        Customer customer = customerService.getById(order.getCustomerId());
+//        List<OrderItem> orderItemList = orderItemService.getAllOrderItemByBillId(order.getId());
+//        OrderDto orderDTO = new OrderDto(order, customer, orderItemList);
+//        modelMap.addAttribute("orderDTO",orderDTO);
+//        return "admin/bill_detail";
+//    }
 }

@@ -11,17 +11,17 @@ public class Item extends BaseEntity {
     @Column(name = "PRODUCT_ID")
     private Long productId;
 
-    @Column(name = "NAME")
-    private String name;
+//    @Column(name = "NAME")
+//    private String name;
 
-    @Column(name = "IMAGE")
-    private String image;
+//    @Column(name = "IMAGE")
+//    private String image;
 
     @Column(name = "NUMBER")
     private Long number;
 
-    @Column(name = "PRICE")
-    private Long price;
+//    @Column(name = "PRICE")
+//    private Long price;
 
     @Column(name = "CUSTOMER_ID")
     private Long customerId;
@@ -45,14 +45,6 @@ public class Item extends BaseEntity {
         this.number = number;
     }
 
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
     public Long getCustomerId() {
         return customerId;
     }
@@ -69,23 +61,33 @@ public class Item extends BaseEntity {
         this.status = status;
     }
 
-    public String getName() {
-        return name;
-    }
+//    public Long getPrice() {
+//        return price;
+//    }
+//
+//    public void setPrice(Long price) {
+//        this.price = price;
+//    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getImage() {
-        return image;
-    }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public double getItemMoney(){
-        return price * number;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(String image) {
+//        this.image = image;
+//    }
+//
+//    public double getItemMoney(){
+//        return price * number;
+//    }
 }

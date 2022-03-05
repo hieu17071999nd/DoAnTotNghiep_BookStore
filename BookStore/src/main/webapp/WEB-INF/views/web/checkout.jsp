@@ -16,6 +16,7 @@
         <div class="container">
             <p style="font-size: 20px;color: red">${msg}</p>
             <form action="<c:url value="/checkout"/>" class="checkout-form" method="post">
+<%--            <form action="<c:url value="/processOrder"/>" class="checkout-form" method="post">--%>
                 <div class="row">
                     <div class="col-lg-5">
                         <h4>Thông tin thanh toán</h4>
@@ -36,7 +37,7 @@
                             <div class="col-lg-12">
                                 <label for="address">Địa chỉ giao hàng<span>*</span></label>
                                 <button type="button" data-toggle="modal" data-target="#edit">Chọn địa chỉ khác</button>
-                                <textarea name="address" readonly style="height: 80px;" class="col-lg-12" id="address">${customer.address}</textarea>
+                                <textarea name="address" style="height: 80px;" class="col-lg-12" id="address">${customer.address}</textarea>
                             </div>
                             <div class="col-lg-12">
                             </div>
@@ -48,11 +49,11 @@
                             <div class="order-total">
                                 <ul class="order-table">
                                     <li>Sản phẩm <span>Tạm tính</span></li>
-                                    <c:forEach items="${items}" var="item">
-                                        <input name="item_id" type="hidden" value="${item.id}">
-                                        <input type="hidden" id="money1${item.id}" value="${item.itemMoney}">
+                                    <c:forEach items="${itemDtos}" var="itemDto">
+                                        <input name="item_id" type="hidden" value="${itemDto.item.id}">
+                                        <input type="hidden" id="money1${itemDto.item.id}" value="${itemDto.itemMoney}">
                                         <li>
-                                                ${item.name} x ${item.number} <span id="money${item.id}"></span>
+                                                ${itemDto.product.name} x ${itemDto.item.number} <span id="money${itemDto.item.id}"></span>
                                         </li>
                                     </c:forEach>
                                     <input type="hidden" id="total_money1">
@@ -112,13 +113,13 @@
     <script>
         $(document).ready(function () {
             var totalMoney = 0;
-            <c:forEach items="${items}" var="item">
-            var money = $("#money1${item.id}").val();
-            $("#money${item.id}").text(new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(money));
-            totalMoney += parseInt(${item.itemMoney});
-            $("#total_money1").val(totalMoney);
-            var show = $("#total_money1").val();
-            $("#total_money").text(new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(show));
+            <c:forEach items="${itemDtos}" var="itemDto">
+                var money = $("#money1${itemDto.item.id}").val();
+                $("#money${itemDto.item.id}").text(new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(money));
+                totalMoney += parseInt(${itemDto.itemMoney});
+                $("#total_money1").val(totalMoney);
+                var show = $("#total_money1").val();
+                $("#total_money").text(new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(show));
             </c:forEach>
             $("#province").change(function () {
                 var provinceId = $("#province").val();

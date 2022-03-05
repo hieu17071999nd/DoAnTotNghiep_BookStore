@@ -9,7 +9,7 @@ public interface OrderItemRepo extends JpaRepository<OrderItem, Long> {
 
     List<OrderItem> findAllByStatus(Long status);
 
-    List<OrderItem> findAllByBillId(Long billId);
+    List<OrderItem> findAllByOrderId(Long orderId);
 
 
 }

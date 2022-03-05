@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="Examples">
+  <process id="bookOrder" name="bookOrder" isExecutable="true">
+    <startEvent id="start" name="Start"></startEvent>
+    <endEvent id="theEnd"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="servicetask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <userTask id="usertask2" name="Duyệt đơn hàng"></userTask>
+    <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="usertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_numberProductOrder')) <= (execution.getVariable('var_numberProductOld'))}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_numberProductOrder')) > (execution.getVariable('var_numberProductOld'))}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="servicetask2" targetRef="theEnd"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="servicetask3" targetRef="theEnd"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Nhận đơn hàng" activiti:class="com.hieuvm.bookstore.task.ReceiveOrder">
+      <documentation>Lưu trữ thông tin đơn hàng vào các bảng order</documentation>
+    </serviceTask>
+    <serviceTask id="servicetask2" name="Gửi email đặt đơn hàng thành công" activiti:class="com.hieuvm.bookstore.task.SendEmailServiceTask"></serviceTask>
+    <serviceTask id="servicetask3" name="Gửi email hủy đơn hàng" activiti:class="com.hieuvm.bookstore.task.SendEmailServiceTask"></serviceTask>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_book-order">
+    <bpmndi:BPMNPlane bpmnElement="book-order" id="BPMNPlane_book-order">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="103.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="theEnd" id="BPMNShape_theEnd">
+        <omgdc:Bounds height="35.0" width="35.0" x="770.0" y="104.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="290.0" y="101.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="93.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="64.0" width="121.0" x="530.0" y="26.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="61.0" width="110.0" x="536.0" y="158.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="120.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="245.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="121.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="310.0" y="101.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="310.0" y="141.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="536.0" y="188.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="485.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="58.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="651.0" y="58.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="104.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="646.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="139.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

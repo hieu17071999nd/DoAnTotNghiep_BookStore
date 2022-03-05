@@ -11,7 +11,7 @@
 <!--    <property name="jdbcUsername" value="sa" />-->
 <!--    <property name="jdbcPassword" value="" />-->
 
-    <property name="databaseType" value="h2" />
+    <property name="databaseType" value="mysql" />
     <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/book_store3" />
     <property name="jdbcDriver" value="com.mysql.jdbc.Driver" />
     <property name="jdbcUsername" value="root" />
@@ -26,7 +26,15 @@
         <bean class="org.activiti.engine.impl.rules.RulesDeployer" />
       </list>
     </property>
-    
+
+<!--    cau hinh email task-->
+<!--    <property name="mailServerHost" value="smtp.gmail.com"/>-->
+<!--    <property name="mailServerPort" value="456"/>-->
+    <property name="mailServerDefaultFrom" value="hieumv99nd@gmail.com"/>
+<!--    <property name="mailServerUseSSL" value="true"/>-->
+<!--    <property name="mailServerUsername" value="mailtask@gmail.com"/>-->
+<!--    <property name="mailServerPassword" value="mailtask123"/>-->
   </bean>
-  
+
+  ...
 </beans>

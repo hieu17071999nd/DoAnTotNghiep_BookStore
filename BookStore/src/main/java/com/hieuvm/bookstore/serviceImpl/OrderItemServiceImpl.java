@@ -28,8 +28,8 @@ public class OrderItemServiceImpl implements OrderItemService {
         return orderItemRepo.findAll();
     }
 
-    public List<OrderItem> getAllOrderItemByBillId(Long billId) {
-        return orderItemRepo.findAllByBillId(billId);
+    public List<OrderItem> getAllOrderItemByOrderId(Long orderId) {
+        return orderItemRepo.findAllByOrderId(orderId);
     }
 
     public Boolean insert(OrderItem orderItem) {

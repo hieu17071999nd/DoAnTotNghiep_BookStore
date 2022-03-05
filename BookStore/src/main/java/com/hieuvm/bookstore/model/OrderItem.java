@@ -1,14 +1,13 @@
 package com.hieuvm.bookstore.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ORDER_ITEM")
-public class OrderItem extends BaseEntity {
-    @Column(name = "BILL_ID")
-    private Long billId;
+public class OrderItem extends BaseEntity{
+
+    @Column(name = "ORDER_ID")
+    private Long orderId;
 
     @Column(name = "PRODUCT_ID")
     private Long productId;
@@ -31,12 +30,12 @@ public class OrderItem extends BaseEntity {
     @Column(name = "STATUS")
     private Long status;
 
-    public Long getBillId() {
-        return billId;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setBillId(Long billId) {
-        this.billId = billId;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public Long getProductId() {
@@ -95,7 +94,7 @@ public class OrderItem extends BaseEntity {
         this.image = image;
     }
 
-    public double getItemMoney(){
+    public double  getItemMoney(){
         return price * number;
     }
 
