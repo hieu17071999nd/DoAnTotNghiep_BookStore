@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration" >
+        <!-- Database configurations -->
+        <!--    <property name="databaseType" value="h2" />-->
+        <!--    <property name="jdbcUrl" value="jdbc:h2:tcp://localhost/activiti" />-->
+        <!--    <property name="jdbcDriver" value="org.h2.Driver" />-->
+        <!--    <property name="jdbcUsername" value="sa" />-->
+        <!--    <property name="jdbcPassword" value="" />-->
+
+        <property name="databaseType" value="mysql" />
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/book_store2" />
+        <property name="jdbcDriver" value="com.mysql.jdbc.Driver" />
+        <property name="jdbcUsername" value="root" />
+        <property name="jdbcPassword" value="1999" />
+
+        <property name="mailServerPort" value="1025"/>
+
+        <property name="jobExecutorActivate" value="false" />
+
+        <property name="customPostDeployers">
+            <list>
+                <bean class="org.activiti.engine.impl.rules.RulesDeployer" />
+            </list>
+        </property>
+
+        <!--    cau hinh email task-->
+        <!--    <property name="mailServerHost" value="smtp.gmail.com"/>-->
+        <!--    <property name="mailServerPort" value="456"/>-->
+        <property name="mailServerDefaultFrom" value="hieumv99nd@gmail.com"/>
+        <!--    <property name="mailServerUseSSL" value="true"/>-->
+        <!--    <property name="mailServerUsername" value="mailtask@gmail.com"/>-->
+        <!--    <property name="mailServerPassword" value="mailtask123"/>-->
+    </bean>
+
+    <bean id="emailService"
+          class="com.hieuvm.bookstore.Test.EmailService" />
+    <bean id="sMSService"
+          class="com.hieuvm.bookstore.Test.SMSService" />
+    <bean id="twitterService"
+          class="com.hieuvm.bookstore.Test.TwitterService" />
+    <bean id="messageProcessor"
+          class="com.hieuvm.bookstore.Test.MessageProcessorImpl">
+        <property name="messageService" ref="twitterService"></property>
+    </bean>
+
+</beans>

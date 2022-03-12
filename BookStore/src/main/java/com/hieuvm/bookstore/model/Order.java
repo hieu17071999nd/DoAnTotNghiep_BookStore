@@ -1,15 +1,24 @@
 package com.hieuvm.bookstore.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "ORDERS")
-public class Order extends BaseEntity {
+public class Order {
+
+    @Id
+    private Long id;
 
     @Column(name = "CUSTOMER_ID")
     private Long customerId;
+
+    @Column(name = "STAFF_ID")
+    private Long staffId;
 
     @Column(name = "DELIVERY_ADDRESS")
     private String deliveryAddress;
@@ -20,8 +29,35 @@ public class Order extends BaseEntity {
     @Column(name = "TOTAL")
     private Long total;
 
+    @Column(name = "CHECK_PRODUCT")
+    private Boolean checkProduct;
+
     @Column(name = "STATUS")
     private Long status;
+
+    @Column
+    @CreatedBy
+    private String createBy;
+
+    @Column
+    @CreatedDate
+    private Date createDate;
+
+    @Column
+    @LastModifiedBy
+    private String updateBy;
+
+    @Column
+    @LastModifiedBy
+    private Date updateDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getCustomerId() {
         return customerId;
@@ -39,14 +75,6 @@ public class Order extends BaseEntity {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public Long getStatus() {
-        return status;
-    }
-
-    public void setStatus(Long status) {
-        this.status = status;
-    }
-
     public Long getNumerOrderItem() {
         return numerOrderItem;
     }
@@ -61,5 +89,61 @@ public class Order extends BaseEntity {
 
     public void setTotal(Long total) {
         this.total = total;
+    }
+
+    public Boolean getCheckProduct() {
+        return checkProduct;
+    }
+
+    public void setCheckProduct(Boolean checkProduct) {
+        this.checkProduct = checkProduct;
+    }
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
 }

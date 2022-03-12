@@ -57,4 +57,8 @@ public class StaffServiceImpl implements StaffService {
     public Staff getStaffLogin(String userName, String password) {
         return staffRepo.getStaffByUsernameAndPassword(userName, password);
     }
+
+    public Staff getStaffByUsername(String userName) {
+        return staffRepo.getStaffByUsername(userName);
+    }
 }

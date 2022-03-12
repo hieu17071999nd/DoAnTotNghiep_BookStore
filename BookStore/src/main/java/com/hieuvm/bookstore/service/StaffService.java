@@ -26,4 +26,6 @@ public interface StaffService {
     int totalItem();
 
     Staff getStaffLogin(String userName, String password);
+
+    Staff getStaffByUsername(String userName);
 }

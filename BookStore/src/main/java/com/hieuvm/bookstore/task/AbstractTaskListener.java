@@ -1,13 +1,11 @@
 package com.hieuvm.bookstore.task;
 
-import org.activiti.engine.delegate.JavaDelegate;
-import org.springframework.context.ApplicationContextAware;
+import org.activiti.engine.delegate.TaskListener;
 
-public abstract class AbstractTask2 implements JavaDelegate {
+public abstract class AbstractTaskListener implements TaskListener {
 
     public <T> T getBean(Class<T> clazz) {
         T object = ApplicationContextProvider.getApplicationContext().getBean(clazz);
         return object;
     }
-
 }

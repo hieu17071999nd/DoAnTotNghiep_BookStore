@@ -1,11 +1,8 @@
 package com.hieuvm.bookstore.service;
 
-import com.hieuvm.bookstore.model.Employee;
-import com.hieuvm.bookstore.model.OrderItem;
-import com.hieuvm.bookstore.model.Product;
+import com.hieuvm.bookstore.model.Order;
 import com.hieuvm.bookstore.repository.EmployeeRepository;
 import org.activiti.engine.*;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,26 +33,25 @@ public class ProcessOrderService {
 	@Autowired
 	private OrderItemService orderItemService;
 
+	@Autowired
+	private OrderService orderService;
+
 	@PostConstruct
 	void init() {
 		int i = 1;
 //		runtimeService.startProcessInstanceByKey("simple-process", new HashMap<>());
 	}
 
-	public void startBookOrder(OrderItem orderItem) {
-		Product product = productService.getById(orderItem.getProductId());
-
-		// put bien kiem tra dieu kien
+	public void startBookOrder(Order order) {
 		Map<String, Object> variables = new HashMap<>();
-		variables.put("var_numberProductOrder", orderItem.getNumber());
-		variables.put("var_numberProductOld", product.getQuantily());
+		variables.put("var_checkNumberProduct", order.getCheckProduct());
+
+//		variables.put("emailAddressCustomer", "hieumv99nd@gmail.com");
+//		variables.put("customerName", "hieu dtrai");
 
 		String bpId = runtimeService.startProcessInstanceByKey("bookOrder", variables).getProcessInstanceId();
-		orderItem.setId(Long.parseLong(bpId));
-//		runtimeService.setVariable(bpId, "hhh", 1);
-		orderItemService.insert(orderItem);
-
-
+		order.setId(Long.parseLong(bpId));
+		orderService.insert(order);
 	}
 
 	public List<Task> getTasks(String assignee) {

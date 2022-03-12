@@ -15,8 +15,8 @@
     <section class="checkout-section spad">
         <div class="container">
             <p style="font-size: 20px;color: red">${msg}</p>
-            <form action="<c:url value="/checkout"/>" class="checkout-form" method="post">
-<%--            <form action="<c:url value="/processOrder"/>" class="checkout-form" method="post">--%>
+<%--            <form action="<c:url value="/checkout"/>" class="checkout-form" method="post">--%>
+            <form action="<c:url value="/processOrder"/>" class="checkout-form" method="post">
                 <div class="row">
                     <div class="col-lg-5">
                         <h4>Thông tin thanh toán</h4>
