@@ -46,63 +46,65 @@
                                     </div>
                                 </div>
                             </div>
-                            <table id="example2" class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Stt</th>
-                                    <th>Mã loại sản phẩm</th>
-                                    <th>Tên loại sản phẩm</th>
-                                    <th>Mức độ ưu tiên</th>
-                                    <th>Mô tả thể loại</th>
-                                    <th>Thể loại cha</th>
-                                    <th>Trạng thái</th>
-                                    <th>Sửa</th>
-                                    <th>Xóa</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <%
-                                    int stt = (int) request.getAttribute("page_id");
-                                %>
-                                <c:forEach items="${list}" var="category">
+                            <form action="<c:url value='/admin/category/get2'/>" id="formSubmit" method="get">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
                                     <tr>
-                                        <td><%=stt%>
-                                        </td>
-                                        <td>${category.code}</td>
-                                        <td>${category.name}</td>
-                                        <td>${category.priority}</td>
-                                        <td>${category.description}</td>
-                                        <td>${category.type}</td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${category.status == 1}">
-                                                    <c:out value="Hiệu lực"/>
-                                                </c:when>
-                                                <c:when test="${category.status != 1}">
-                                                    <c:out value="Không hiệu lực"/>
-                                                </c:when>
-                                            </c:choose>
-                                        </td>
-                                        <td>
-                                            <a href="<c:url value="/admin/category/edit-category/${category.id}"/>" class="edit"
-                                               title="Edit"><i class="fas fa-pen"></i></a>
-                                        </td>
-                                        <td>
-                                            <a href="<c:url value="/delete-category/${category.id}"/>" class="delete"
-                                               title="Delete" onclick="return confirm('Chắc chắn muốn xóa?');"><i
-                                                    class="fas fa-trash-alt"></i></a>
-                                        </td>
+                                        <th>STT</th>
+                                        <th>Mã loại sản phẩm</th>
+                                        <th>Tên loại sản phẩm</th>
+                                        <th>Mức độ ưu tiên</th>
+                                        <th>Mô tả thể loại</th>
+                                        <th>Thể loại cha</th>
+                                        <th>Trạng thái</th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
                                     </tr>
+                                    </thead>
+                                    <tbody>
                                     <%
-                                        stt++;
+                                        int stt = (int) request.getAttribute("page_id");
                                     %>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+                                    <c:forEach items="${list}" var="category">
+                                        <tr>
+                                            <td><%=stt%>
+                                            </td>
+                                            <td>${category.code}</td>
+                                            <td>${category.name}</td>
+                                            <td>${category.priority}</td>
+                                            <td>${category.description}</td>
+                                            <td>${category.type}</td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${category.status == 1}">
+                                                        <c:out value="Hiệu lực"/>
+                                                    </c:when>
+                                                    <c:when test="${category.status != 1}">
+                                                        <c:out value="Không hiệu lực"/>
+                                                    </c:when>
+                                                </c:choose>
+                                            </td>
+                                            <td>
+                                                <a href="<c:url value="/admin/category/edit-category/${category.id}"/>" class="edit"
+                                                   title="Edit"><i class="fas fa-pen"></i></a>
+                                            </td>
+                                            <td>
+                                                <a href="<c:url value="/delete-category/${category.id}"/>" class="delete"
+                                                   title="Delete" onclick="return confirm('Chắc chắn muốn xóa?');"><i
+                                                        class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        <%
+                                            stt++;
+                                        %>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                                <input type="hidden" value="" id="page" name="page"/>
+                                <input type="hidden" value="" id="maxPageItem" name="maxPageItem"/>
+                            </form>
                             <br>
-                            <ul class="pagination" id="pagination"></ul>
-                            <input type="hidden" value="" id="page" name="page"/>
-                            <input type="hidden" value="" id="limit" name="limit"/>
+                            <ul class="pagination" id="pagination" style="margin-left: 300px"></ul>
                         </div>
                     </div>
                 </div>
@@ -115,6 +117,28 @@
     </div>
     <!-- ./wrapper -->
 
-
+    <script type="text/javascript">
+        $(function () {
+            debugger;
+            var totalPages = ${totalPage};
+            var currentPage = ${page};
+            var limit = 5;
+            window.pagObj = $('#pagination').twbsPagination({
+                totalPages: totalPages,
+                visiblePages: 5,
+                startPage: currentPage,
+                onPageClick: function (event, page) {
+                    if (currentPage != page) {
+                        $('#maxPageItem').val(limit);
+                        $('#page').val(page);
+                        $('#formSubmit').submit();
+                    }
+                    console.info(page + ' (from options)');
+                }
+            }).on('page', function (event, page) {
+                console.info(page + ' (from event listening)');
+            });
+        });
+    </script>
     </body>
 </html>

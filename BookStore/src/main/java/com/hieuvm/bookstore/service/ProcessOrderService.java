@@ -52,6 +52,7 @@ public class ProcessOrderService {
 		String bpId = runtimeService.startProcessInstanceByKey("bookOrder", variables).getProcessInstanceId();
 		order.setId(Long.parseLong(bpId));
 		orderService.insert(order);
+		System.out.println(123);
 	}
 
 	public List<Task> getTasks(String assignee) {

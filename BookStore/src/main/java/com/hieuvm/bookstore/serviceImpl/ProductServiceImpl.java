@@ -1,10 +1,12 @@
 package com.hieuvm.bookstore.serviceImpl;
 
 import com.hieuvm.bookstore.model.Product;
+import com.hieuvm.bookstore.model.Staff;
 import com.hieuvm.bookstore.repository.BaseQueryRepo;
 import com.hieuvm.bookstore.repository.ProductRepo;
 import com.hieuvm.bookstore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,10 @@ public class ProductServiceImpl implements ProductService {
 
     public List<Product> getAllProduct() {
         return productRepo.findAll();
+    }
+
+    public List<Product> getAll(Pageable pageable) {
+        return productRepo.findAll(pageable).getContent();
     }
 
     public List<Product> findAllByCategoryId(Long categoryId) {
@@ -47,4 +53,8 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProductHot() {
         return baseQueryRepo.getProductHot();
     }
+    public List<Product> getProductSearch(String search) {
+        return productRepo.getProductSearch(search);
+    }
+
 }

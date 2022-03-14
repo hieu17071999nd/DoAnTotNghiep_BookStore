@@ -88,4 +88,17 @@ public class BaseQueryRepo {
         return categoryList;
     }
 
+    public List<Product> getProductSearch(String search) {
+        StringBuilder sql = new StringBuilder(" SELECT * FROM product WHERE 1 = 1 ");
+        if (!search.isEmpty()) {
+            sql.append(" and name like :search ");
+        }
+        Query query = em.createNativeQuery(sql.toString(), Product.class);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        List<Product> products = query.getResultList();
+        return products;
+    }
+
 }

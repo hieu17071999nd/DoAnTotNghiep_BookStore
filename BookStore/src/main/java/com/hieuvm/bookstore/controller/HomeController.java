@@ -98,4 +98,12 @@ public class HomeController {
         return mav;
     }
 
+    @GetMapping(value = "/searchProduct")
+    public String searchProduct(@RequestParam("search") String search, ModelMap modelMap) {
+        List<Product> products = baseQueryRepo.getProductSearch(search);
+        modelMap.addAttribute("products", products);
+        modelMap.addAttribute("search", search);
+        return "web/product";
+    }
+
 }

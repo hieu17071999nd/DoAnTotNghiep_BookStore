@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Title</title>
@@ -61,12 +62,26 @@
                             </c:choose>
                         </div>
                         <div class="tg-searchbox" style="margin-top: 20px">
-                            <form class="tg-formtheme tg-formsearch">
-                                <fieldset>
-                                    <input type="text" name="search" class="typeahead form-control" placeholder="Tìm kiếm...">
-                                    <button type="submit"><i class="icon-magnifier"></i></button>
-                                </fieldset>
-                            </form>
+<%--                            <c:choose>--%>
+<%--                                <c:when test="${search==null}">--%>
+                                    <form class="tg-formtheme tg-formsearch" action="<c:url value="/searchProduct" />">
+                                        <fieldset>
+                                            <input type="text" name="search" value="${search}" class="typeahead form-control" placeholder="Tìm kiếm...">
+                                            <button type="submit"><i class="icon-magnifier"></i></button>
+                                        </fieldset>
+                                    </form>
+<%--                                </c:when>--%>
+<%--                                <c:when test="${search!=null}">--%>
+<%--                                    <c:url value="/searchProduct" var="url"/>--%>
+<%--                                    <form:form class="tg-formtheme tg-formsearch" action="${url}">--%>
+<%--                                        <fieldset>--%>
+<%--                                            <input type="text" name="search" class="typeahead form-control" placeholder="Tìm kiếm...">--%>
+<%--                                            <form:input path="search" type="text" class="form-control" value="${search}" required="true"/>--%>
+<%--                                            <button type="submit"><i class="icon-magnifier"></i></button>--%>
+<%--                                        </fieldset>--%>
+<%--                                    </form:form>--%>
+<%--                                </c:when>--%>
+<%--                            </c:choose>--%>
                         </div>
                     </div>
                 </div>

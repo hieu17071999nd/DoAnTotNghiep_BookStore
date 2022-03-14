@@ -16,26 +16,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AxceptStockTask extends AbstractTask2 {
-
-//    @Autowired
-//    private OrderRepo orderRepo;
-//
-//    @Autowired
-//    private ProductRepo productRepo;
-//
-//    @Autowired
-//    private OrderItemRepo orderItemRepo;
+public class SubtractStockTask extends AbstractTask2 {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
-//        TaskService taskService = getBean(TaskService.class);
         OrderRepo orderRepo = getBean(OrderRepo.class);
         OrderItemRepo orderItemRepo = getBean(OrderItemRepo.class);
         ProductRepo productRepo = getBean(ProductRepo.class);
-//        CustomerRepo customerRepo = getBean(CustomerRepo.class);
-//        IdentityService identityService = getBean(IdentityService.class);
         String bpId = execution.getProcessInstanceId();
         Order order = orderRepo.getById(Long.valueOf(bpId));
 

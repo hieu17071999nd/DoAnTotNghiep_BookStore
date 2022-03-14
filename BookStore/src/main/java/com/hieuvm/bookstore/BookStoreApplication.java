@@ -1,32 +1,13 @@
 package com.hieuvm.bookstore;
 
-import com.hieuvm.bookstore.Test.MessageProcessor;
-import com.hieuvm.bookstore.service.EmployeeService;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
-import org.activiti.spring.ProcessEngineFactoryBean;
-import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.activiti.spring.boot.SecurityAutoConfiguration;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.transaction.PlatformTransactionManager;
-
-import javax.sql.DataSource;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@ImportResource({"classpath*:applicationContext.xml"})
+@ImportResource({"classpath*:activity_config.xml"})
 public class BookStoreApplication {
-//    @ImportResource("classpath:activity_context.xml")
-//    @ImportResource("classpath:activiti_cfg.xml")
 
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);

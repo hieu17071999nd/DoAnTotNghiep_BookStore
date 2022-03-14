@@ -13,6 +13,8 @@ public interface OrderService {
 
     List<Order> getAllByStatus(Long status);
 
+    List<Order> findAllByIdIsNotNullOrderByCreateDateDesc();
+
     Boolean insert(Order order);
 
     Order getById(Long id);

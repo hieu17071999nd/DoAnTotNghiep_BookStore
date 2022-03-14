@@ -131,10 +131,10 @@ public class ProcessOrderController {
 //		Task task = taskService.createTaskQuery().taskAssignee("admin").singleResult();
 
 		//
-		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("usertask1999").list();
-		Task tasksv = taskService.createTaskQuery().taskCandidateGroup("staffs").singleResult();
-		Task tasksv2 = taskService.createTaskQuery().taskCandidateUser("admin").singleResult();
-		Task tasksv3 = taskService.createTaskQuery().taskAssignee("hieu").singleResult();
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrderTask").list();
+//		Task tasksv = taskService.createTaskQuery().taskCandidateGroup("staffs").singleResult();
+//		Task tasksv2 = taskService.createTaskQuery().taskCandidateUser("admin").singleResult();
+//		Task tasksv3 = taskService.createTaskQuery().taskAssignee("hieu").singleResult();
 		for (Task task: tasks) {
 			taskService.complete(task.getId());
 		}

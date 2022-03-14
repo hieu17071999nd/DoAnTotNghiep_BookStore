@@ -1,10 +1,14 @@
 package com.hieuvm.bookstore.service;
 
 import com.hieuvm.bookstore.model.Product;
+import com.hieuvm.bookstore.model.Staff;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ProductService {
+
+    List<Product> getAll(Pageable pageable);
 
     List<Product> getAllProduct();
 
@@ -20,4 +24,5 @@ public interface ProductService {
 
     List<Product> getProductHot();
 
+    List<Product> getProductSearch(String search);
 }

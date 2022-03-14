@@ -3,20 +3,30 @@
   <process id="bookOrder" name="bookOrder" isExecutable="true">
     <startEvent id="start" name="Start"></startEvent>
     <endEvent id="theEnd"></endEvent>
-    <sequenceFlow id="flow1" sourceRef="start" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="receiveOrderTask"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask1999" name="Duyệt đơn hàng" activiti:assignee="hieu" activiti:candidateUsers="admin" activiti:candidateGroups="staffs"></userTask>
-    <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="usertask1999">
+    <sequenceFlow id="flow2" sourceRef="receiveOrderTask" targetRef="exclusivegateway1"></sequenceFlow>
+    <userTask id="approveOrderTask" name="Duyệt đơn hàng" activiti:assignee="hieu" activiti:candidateUsers="admin" activiti:candidateGroups="staffs"></userTask>
+    <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="approveOrderTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_checkNumberProduct')) == true}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask1" name="Nhận đơn hàng" activiti:class="com.hieuvm.bookstore.task.ReceiveOrder">
+    <serviceTask id="receiveOrderTask" name="Nhận đơn hàng" activiti:class="com.hieuvm.bookstore.task.ReceiveOrder">
       <documentation>Lưu trữ thông tin đơn hàng vào các bảng order</documentation>
     </serviceTask>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="theEnd"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Trừ kho" activiti:class="com.hieuvm.bookstore.task.AxceptStockTask"></serviceTask>
-    <sequenceFlow id="flow10" sourceRef="usertask1999" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow11" sourceRef="servicetask2" targetRef="theEnd"></sequenceFlow>
+    <serviceTask id="substractInventoryTask" name="Trừ kho" activiti:class="com.hieuvm.bookstore.task.SubtractStockTask"></serviceTask>
+    <sequenceFlow id="flow10" sourceRef="approveOrderTask" targetRef="substractInventoryTask"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="substractInventoryTask" targetRef="theEnd"></sequenceFlow>
+    <serviceTask id="cancelOrderTask" name="Hủy đơn hàng" activiti:class="com.hieuvm.bookstore.task.CancelOrderTask"></serviceTask>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway1" targetRef="timerintermediatecatchevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_checkNumberProduct')) == false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="cancelOrderTask" targetRef="theEnd"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+      	<timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="cancelOrderTask"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_bookOrder">
     <bpmndi:BPMNPlane bpmnElement="bookOrder" id="BPMNPlane_bookOrder">
@@ -29,14 +39,20 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="290.0" y="101.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1999" id="BPMNShape_usertask1999">
+      <bpmndi:BPMNShape bpmnElement="approveOrderTask" id="BPMNShape_approveOrderTask">
         <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+      <bpmndi:BPMNShape bpmnElement="receiveOrderTask" id="BPMNShape_receiveOrderTask">
         <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="93.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+      <bpmndi:BPMNShape bpmnElement="substractInventoryTask" id="BPMNShape_substractInventoryTask">
         <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="cancelOrderTask" id="BPMNShape_cancelOrderTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="490.0" y="167.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="380.0" y="177.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="95.0" y="120.0"></omgdi:waypoint>
@@ -51,10 +67,6 @@
         <omgdi:waypoint x="310.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="330.0" y="121.0"></omgdi:waypoint>
-        <omgdi:waypoint x="770.0" y="121.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="485.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="57.0"></omgdi:waypoint>
@@ -63,6 +75,20 @@
         <omgdi:waypoint x="685.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="787.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="787.0" y="104.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="310.0" y="141.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="194.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="595.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="139.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="415.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="194.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

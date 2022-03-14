@@ -1,0 +1,27 @@
+1.
+<intermediateCatchEvent id="coffeebreak">
+ <timerEventDefinition>
+ <timeDuration>PT30S</timeDuration>
+ </timerEventDefinition>
+ </intermediateCatchEvent>
+
+ Sự kiện dành cho mình đặt ra để luồng chạy đến đó sẽ đợi 1 khoảng thời gian như mình cấu hình
+ + PT30S: ví dụ cho 30s
+ + PT5M: ví dụ cho 5 phút
+ + PT5H: ví dụ cho 5h
+
+ -> tuân theo chuẩn: period iso 8601 duration -> quy định chuẩn về thời gian
+
+2.
+- Asynchronous: thuộc tính bất đồng bộ. đặt vào service task nhắm giúp nó chạy ngầm để trả lại bpId ngay lúc đó.
+
+3. Email task
+* Muốn gửi mail phải kết nối tới mail server-> Mô tả: ip, port, phương thức kết nối, phương thức gửi đi, user và pass.
+
+- Phương thức gửi là gì?
+- Địa chỉ gửi máy chủ là gì? port bao nhiêu? ( địa chỉ server build ra đang ở đâu, là gì?)
+- Địa chỉ-giao thức IMAP và giao thức post?
+- Username và password để đăng nhập vào?
+
++ giao thức SMTP là phương thức gửi mail.
+

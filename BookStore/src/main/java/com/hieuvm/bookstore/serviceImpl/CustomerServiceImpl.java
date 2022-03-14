@@ -1,10 +1,12 @@
 package com.hieuvm.bookstore.serviceImpl;
 
 import com.hieuvm.bookstore.model.Customer;
+import com.hieuvm.bookstore.model.Staff;
 import com.hieuvm.bookstore.repository.CustomerRepo;
 import com.hieuvm.bookstore.repository.LoginRepo;
 import com.hieuvm.bookstore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private LoginRepo loginRepo;
+
+    public List<Customer> getAll(Pageable pageable) {
+        return customerRepo.findAll(pageable).getContent();
+    }
 
     public List<Customer> getAllCustomer() {
         return customerRepo.findAll();

@@ -20,6 +20,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepo.findAllByStatus(1L);
     }
 
+    @Override
+    public List<Order> findAllByIdIsNotNullOrderByCreateDateDesc() {
+        return orderRepo.findAllByIdIsNotNullOrderByCreateDateDesc();
+    }
+
     public List<Order> getAll(Pageable pageable) {
         return orderRepo.findAll(pageable).getContent();
     }

@@ -7,6 +7,8 @@ import com.hieuvm.bookstore.service.CategoryService;
 import com.hieuvm.bookstore.service.ProductService;
 import com.hieuvm.bookstore.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +34,23 @@ public class ProductController {
 
     @GetMapping("/admin/product/get")
     public String viewMale(ModelMap modelMap) {
-        modelMap.addAttribute("list", productService.getAllProduct());
-//        int numPage= (int) Math.ceil((double) productService.getProductByGender(true).size()/7);
-//        modelMap.addAttribute("num_page",numPage);
+        Pageable pageable = PageRequest.of(0, 5);
+        modelMap.addAttribute("list", productService.getAll(pageable));
+        int totalPage= (int) Math.ceil((double) productService.getAllProduct().size()/5);
+        modelMap.addAttribute("page_id",1);
+        modelMap.addAttribute("totalPage",totalPage);
+        modelMap.addAttribute("page",1);
+        return "admin/product_manage";
+    }
+
+    @RequestMapping(value = "/admin/product/get2", method = RequestMethod.GET)
+    private String getAll2(ModelMap modelMap, @RequestParam("page") int page, @RequestParam("maxPageItem") int maxPageItem) {
+        Pageable pageable = PageRequest.of(page - 1, maxPageItem);
+        modelMap.addAttribute("list", productService.getAll(pageable));
+        int totalPage= (int) Math.ceil((double) productService.getAllProduct().size()/maxPageItem);
+        modelMap.addAttribute("page_id",maxPageItem * (page -1) + 1);
+        modelMap.addAttribute("totalPage",totalPage);
+        modelMap.addAttribute("page", page);
         return "admin/product_manage";
     }
 
