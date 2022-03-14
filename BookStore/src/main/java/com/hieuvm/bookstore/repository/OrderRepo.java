@@ -9,5 +9,7 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
 
     List<Order> findAllByStatus(Long status);
 
+    List<Order> findAllByCustomerIdAndStatus(Long customerId, Long status);
+
     List<Order> findAllByIdIsNotNullOrderByCreateDateDesc();
 }

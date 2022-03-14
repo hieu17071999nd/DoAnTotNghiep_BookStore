@@ -1,6 +1,7 @@
 package com.hieuvm.bookstore.controller;
 
 import com.hieuvm.bookstore.DTO.ItemDto;
+import com.hieuvm.bookstore.DTO.OrderDto;
 import com.hieuvm.bookstore.model.*;
 import com.hieuvm.bookstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class CartController {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private CustomerService customerService;
@@ -96,6 +100,40 @@ public class CartController {
         }
         modelMap.addAttribute("itemDtos", itemDtos);
         return "web/cart";
+    }
+
+    @GetMapping("/donhangdangdat")
+    public String ordered(ModelMap modelMap, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("customer");
+        List<OrderDto> orderDtos = new ArrayList<>();
+        List<Order> orders1 = orderService.findAllByCustomerIdAndStatus(customer.getId(), 1L);
+        List<Order> orders2 = orderService.findAllByCustomerIdAndStatus(customer.getId(), 2L);
+        if (orders1.size() > 0) {
+            for (Order order : orders1) {
+                List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+                OrderDto orderDto = new OrderDto(order, customer, orderItems);
+                orderDtos.add(orderDto);
+            }
+        }
+//        if (orders2.size() > 0) {
+//            for (Order order : orders1) {
+//                List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+//                OrderDto orderDto = new OrderDto(order, customer, orderItems);
+//                orderDtos.add(orderDto);
+//            }
+//        }
+        modelMap.addAttribute("orderDtos", orderDtos);
+        return "web/ordered";
+    }
+
+    @GetMapping("/donhangdamua")
+    public String orderedHistory(ModelMap modelMap, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("customer");
+        List<OrderItem> orderItems = orderItemService.findAllByCustomerIdAndStatus(customer.getId(), 3L);
+        modelMap.addAttribute("orderItems", orderItems);
+        return "web/order_history";
     }
 
 }

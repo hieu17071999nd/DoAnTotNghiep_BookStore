@@ -32,6 +32,10 @@ public class OrderItemServiceImpl implements OrderItemService {
         return orderItemRepo.findAllByOrderId(orderId);
     }
 
+    public List<OrderItem> findAllByCustomerIdAndStatus(Long customerId, Long status) {
+        return orderItemRepo.findAllByCustomerIdAndStatus(customerId, status);
+    }
+
     public Boolean insert(OrderItem orderItem) {
         orderItemRepo.save(orderItem);
         return true;

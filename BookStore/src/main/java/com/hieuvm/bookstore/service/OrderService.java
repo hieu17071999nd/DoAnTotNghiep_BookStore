@@ -15,6 +15,8 @@ public interface OrderService {
 
     List<Order> findAllByIdIsNotNullOrderByCreateDateDesc();
 
+    List<Order> findAllByCustomerIdAndStatus(Long customerId, Long status);
+
     Boolean insert(Order order);
 
     Order getById(Long id);

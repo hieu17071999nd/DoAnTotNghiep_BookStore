@@ -45,7 +45,11 @@
                                             <div class="tg-minicartfoot">
                                                 <div class="tg-btns">
                                                     <a class="tg-btn tg-active" href="<c:url value="/taikhoan"/>">Tài khoản của tôi</a>
-                                                    <a class="tg-btn" href="<c:url value="/logout-user"/>" onclick="return confirm('Bạn muốn đăng xuất?');">Đăng xuất</a>
+                                                    <a class="tg-btn tg-active" href="<c:url value="/logout-user"/>" onclick="return confirm('Bạn muốn đăng xuất?');">Đăng xuất</a>
+                                                </div>
+                                                <div class="tg-btns">
+                                                    <a class="tg-btn tg-active" href="<c:url value="/donhangdangdat"/>">Đơn hàng đang đặt</a>
+                                                    <a class="tg-btn tg-active" href="<c:url value="/donhangdamua"/>">Đơn hàng đã mua</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -66,7 +70,7 @@
 <%--                                <c:when test="${search==null}">--%>
                                     <form class="tg-formtheme tg-formsearch" action="<c:url value="/searchProduct" />">
                                         <fieldset>
-                                            <input type="text" name="search" value="${search}" class="typeahead form-control" placeholder="Tìm kiếm...">
+                                            <input id="search" type="text" name="search" value="${search}" class="typeahead form-control" placeholder="Tìm kiếm...">
                                             <button type="submit"><i class="icon-magnifier"></i></button>
                                         </fieldset>
                                     </form>

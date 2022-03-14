@@ -16,6 +16,10 @@
     <script src="<c:url value="/template/web/js/appear.js"/>"></script>
     <script src="<c:url value="/template/web/js/gmap3.js"/>"></script>
     <script src="<c:url value="/template/web/js/main.js"/>"></script>
+
+    <%--    phan trang--%>
+    <script src="<c:url value="/template/paging/jquery.twbsPagination.js"/>"></script>
+    <script src="<c:url value="/template/paging/jquery.twbsPagination.min.js"/>"></script>
 </head>
 <body>
     <footer id="tg-footer" class="tg-footer tg-haslayout">

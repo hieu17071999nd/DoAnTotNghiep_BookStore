@@ -29,6 +29,10 @@ public class OrderServiceImpl implements OrderService {
         return orderRepo.findAll(pageable).getContent();
     }
 
+    public List<Order> findAllByCustomerIdAndStatus(Long customerId, Long status) {
+        return orderRepo.findAllByCustomerIdAndStatus(customerId, status);
+    }
+
     public List<Order> getAllOrder() {
         return orderRepo.findAll();
     }

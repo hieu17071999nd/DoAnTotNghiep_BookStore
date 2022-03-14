@@ -88,14 +88,90 @@ public class BaseQueryRepo {
         return categoryList;
     }
 
-    public List<Product> getProductSearch(String search) {
+    public List<Product> getProductSearch(String search, String categoryId) {
         StringBuilder sql = new StringBuilder(" SELECT * FROM product WHERE 1 = 1 ");
         if (!search.isEmpty()) {
             sql.append(" and name like :search ");
         }
+        if (categoryId != null) {
+            sql.append(" and category_id = :categoryId ");
+        }
         Query query = em.createNativeQuery(sql.toString(), Product.class);
         if (!search.isEmpty()) {
             query.setParameter("search", "%" + search + "%");
+        }
+        if (categoryId != null) {
+            query.setParameter("categoryId", categoryId);
+        }
+        List<Product> products = query.getResultList();
+        return products;
+    }
+
+    public List<Product> getProductSearch2(String search, String page, String maxPageItem, String categoryId) {
+        StringBuilder sql = new StringBuilder(" SELECT * FROM product WHERE 1 = 1 ");
+        if (!search.isEmpty()) {
+            sql.append(" and name like :search ");
+        }
+        if (categoryId != null) {
+            sql.append(" and category_id = :categoryId ");
+        }
+        if (page != null) {
+            sql.append(" LIMIT :maxPageItem");
+        } else {
+            sql.append(" LIMIT 4 ");
+        }
+        if (maxPageItem != null) {
+            sql.append(" OFFSET  :page ");
+        } else {
+            sql.append(" OFFSET  0 ");
+        }
+        Query query = em.createNativeQuery(sql.toString(), Product.class);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (categoryId != null) {
+            query.setParameter("categoryId", categoryId);
+        }
+        if (page != null) {
+            Long a = Long.valueOf(page);
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("page", b * (a -1));
+        }
+        if (maxPageItem != null) {
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("maxPageItem", b);
+        }
+        List<Product> products = query.getResultList();
+        return products;
+    }
+
+    public List<Product> findAllByCategoryId(Long categoryId, String page, String maxPageItem) {
+        StringBuilder sql = new StringBuilder(" SELECT * FROM product WHERE 1 = 1 ");
+        if (categoryId != null) {
+            sql.append(" and category_id = :categoryId ");
+        }
+        if (page != null) {
+            sql.append(" LIMIT :maxPageItem");
+        } else {
+            sql.append(" LIMIT 4 ");
+        }
+        if (maxPageItem != null) {
+            sql.append(" OFFSET  :page ");
+        } else {
+            sql.append(" OFFSET  0 ");
+        }
+        Query query = em.createNativeQuery(sql.toString(), Product.class);
+        if (categoryId != null) {
+            query.setParameter("categoryId", categoryId);
+        }
+        if (page != null) {
+            Long a = Long.valueOf(page);
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("page", b * (a -1));
+        }
+        if (maxPageItem != null) {
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("maxPageItem", b);
         }
         List<Product> products = query.getResultList();
         return products;

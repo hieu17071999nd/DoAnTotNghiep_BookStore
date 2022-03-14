@@ -15,6 +15,8 @@ public interface OrderItemService {
 
     List<OrderItem> getAllOrderItemByOrderId(Long orderId);
 
+    List<OrderItem> findAllByCustomerIdAndStatus(Long customerId, Long status);
+
     List<OrderItem> getAllByStatus(Long status);
 
     Boolean insert(OrderItem orderItem);

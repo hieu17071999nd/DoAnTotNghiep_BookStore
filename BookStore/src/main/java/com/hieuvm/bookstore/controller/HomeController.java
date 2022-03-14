@@ -71,9 +71,20 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/product/category/{id}", method = RequestMethod.GET)
-    public ModelAndView getProductCategory(ModelMap modelMap, @PathVariable("id") Long id) {
-        modelMap.addAttribute("products",productService.findAllByCategoryId(id));
+    public ModelAndView getProductCategory(ModelMap modelMap, @PathVariable("id") Long id, HttpServletRequest request) {
+        String page = request.getParameter("page");
+        String maxPageItem = request.getParameter("maxPageItem");
+        modelMap.addAttribute("products", baseQueryRepo.findAllByCategoryId(id, page, maxPageItem));
         modelMap.addAttribute("categories", categoryService.getAllCategory());
+        modelMap.addAttribute("categoryId", id);
+        int totalPage= (int) Math.ceil((double) productService.findAllByCategoryId(id).size()/4);
+        if (page == null) {
+            modelMap.addAttribute("totalPage", totalPage);
+            modelMap.addAttribute("page", 1);
+        } else {
+            modelMap.addAttribute("totalPage", totalPage);
+            modelMap.addAttribute("page", page);
+        }
 
         modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
         modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
@@ -99,11 +110,27 @@ public class HomeController {
     }
 
     @GetMapping(value = "/searchProduct")
-    public String searchProduct(@RequestParam("search") String search, ModelMap modelMap) {
-        List<Product> products = baseQueryRepo.getProductSearch(search);
+    public String searchProduct(@RequestParam("search") String search, ModelMap modelMap, HttpServletRequest request) {
+        String page = request.getParameter("page");
+        String maxPageItem = request.getParameter("maxPageItem");
+        String categoryId = request.getParameter("categoryId");
+        List<Product> products = baseQueryRepo.getProductSearch2(search, page, maxPageItem, categoryId);
         modelMap.addAttribute("products", products);
         modelMap.addAttribute("search", search);
+        modelMap.addAttribute("categoryId", categoryId);
+        int totalPage= (int) Math.ceil((double) baseQueryRepo.getProductSearch(search, categoryId).size()/4);
+        if (page == null) {
+            modelMap.addAttribute("totalPage", totalPage);
+            modelMap.addAttribute("page", 1);
+        } else {
+            modelMap.addAttribute("totalPage", totalPage);
+            modelMap.addAttribute("page", page);
+        }
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "web/product";
     }
-
 }
