@@ -14,7 +14,7 @@
         <div class="container">
           <div class="row">
             <div id="tg-twocolumns" class="tg-twocolumns">
-              <div class="col-xs-12 col-sm-10 col-md-10 col-lg-11 pull-left">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left">
                 <div id="tg-content" class="tg-content">
                   <div class="tg-products">
                     <c:choose>
@@ -40,7 +40,7 @@
                             <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
                               <div class="tg-postbook">
                                 <figure class="tg-featureimg">
-                                  <div class="tg-bookimg">
+                                  <div class="tg-bookimg" style="width: 80%">
                                     <div class="tg-frontcover"><img src="<c:url value="/resources/images/product/${product.image}"/>" alt="image description" style="height: 250px"></div>
                                     <div class="tg-backcover"><img src="<c:url value="/resources/images/product/${product.image}"/>" alt="image description"></div>
                                   </div>
