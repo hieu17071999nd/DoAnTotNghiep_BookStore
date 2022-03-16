@@ -24,7 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //@RestController
 @Controller
@@ -124,28 +126,97 @@ public class ProcessOrderController {
 
 	@RequestMapping(value = "/approve/{id}")
 	public String approveOrder(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
-//		taskProcessService.getProcessDefinitionIdByProcessId(id.toString());
 		HttpSession session = request.getSession();
 		String username= (String) session.getAttribute("username");
 		Staff staff = staffService.getStaffByUsername(username);
-//		Task task = taskService.createTaskQuery().taskAssignee("admin").singleResult();
-
-		//
-		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrderTask").list();
-//		Task tasksv = taskService.createTaskQuery().taskCandidateGroup("staffs").singleResult();
-//		Task tasksv2 = taskService.createTaskQuery().taskCandidateUser("admin").singleResult();
-//		Task tasksv3 = taskService.createTaskQuery().taskAssignee("hieu").singleResult();
+		Order order = orderService.getById(id);
+		order.setCheckProduct(true);
+		order.setStatus(2L);
+		orderService.save(order);
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("var_checkNumberProduct2", order.getCheckProduct());
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrderTask5").list();
 		for (Task task: tasks) {
-			taskService.complete(task.getId());
+			taskService.complete(task.getId(), variables);
 		}
-		//
 		List<Order> orders = orderService.getAllByStatus(1L);
 		modelMap.addAttribute("orders",orders);
+		modelMap.addAttribute("page_id",1);
+		modelMap.addAttribute("msg", "Phê duyệt đơn hàng thành công");
+//		return "admin/order_manage";
+		return "redirect:/admin/order/get";
+	}
+
+	@RequestMapping(value = "/cancel/{id}")
+	public String cancelOrder(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
+		HttpSession session = request.getSession();
+		String username= (String) session.getAttribute("username");
+		Staff staff = staffService.getStaffByUsername(username);
+		Order order = orderService.getById(id);
+		order.setCheckProduct(false);
+		order.setStatus(0L);
+		orderService.save(order);
+		Map<String, Object> variables = new HashMap<>();
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrderTask").list();
+		for (Task task: tasks) {
+			variables.put("var_checkNumberProduct2", order.getCheckProduct());
+			taskService.complete(task.getId(), variables);
+		}
+		List<Order> orders = orderService.getAllByStatus(1L);
+		modelMap.addAttribute("orders", orders);
 		int numPage= (int) Math.ceil((double) orders.size()/2);
 		modelMap.addAttribute("num_page",numPage);
 		modelMap.addAttribute("page_id",1);
-		modelMap.addAttribute("msg", "Phê duyệt đơn hàng thành công");
-		return "admin/order_manage";
+		modelMap.addAttribute("msg", "Hủy đơn hàng thành công");
+//		return "admin/order_manage";
+		return "redirect:/admin/order/get";
+	}
+
+	@RequestMapping(value = "/transportOrder/{id}")
+	public String transportOrder(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
+		HttpSession session = request.getSession();
+		String username= (String) session.getAttribute("username");
+		Staff staff = staffService.getStaffByUsername(username);
+		Order order = orderService.getById(id);
+		order.setStatus(3L);
+		order.setStaffId(staff.getId());
+		orderService.save(order);
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("assignedStaffTransportTask").list();
+		List<Task> tasks2 = taskService.createTaskQuery().taskAssignee("assignedStaffTransportTask").list();
+		for (Task task: tasks) {
+			taskService.complete(task.getId());
+		}
+		List<Order> orders = orderService.getAllByStatus(1L);
+		modelMap.addAttribute("orders", orders);
+		int numPage= (int) Math.ceil((double) orders.size()/2);
+		modelMap.addAttribute("num_page",numPage);
+		modelMap.addAttribute("page_id",1);
+		modelMap.addAttribute("msg", "Đã giao cho nhân viên vận chuyển");
+//		return "admin/order_manage";
+		return "redirect:/admin/order/get";
+	}
+
+	@RequestMapping(value = "/successfulDeliveryConfirm/{id}")
+	public String successfulDeliveryConfirm(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
+		HttpSession session = request.getSession();
+		String username= (String) session.getAttribute("username");
+		Staff staff = staffService.getStaffByUsername(username);
+		Order order = orderService.getById(id);
+		order.setStatus(4L);
+		order.setStaffId(staff.getId());
+		orderService.save(order);
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("successfulDeliveryConfirmationTask").list();
+		for (Task task: tasks) {
+			taskService.complete(task.getId());
+		}
+		List<Order> orders = orderService.getAllByStatus(1L);
+		modelMap.addAttribute("orders", orders);
+		int numPage= (int) Math.ceil((double) orders.size()/2);
+		modelMap.addAttribute("num_page",numPage);
+		modelMap.addAttribute("page_id",1);
+		modelMap.addAttribute("msg", "Đơn hàng đã được giao thành công");
+//		return "admin/order_manage";
+		return "redirect:/admin/order/get";
 	}
 
 	@RequestMapping(value = "/getXMLOrder/{id}")
@@ -161,12 +232,6 @@ public class ProcessOrderController {
 		String imgBPMN = taskManagementController.getDiagramUrl();
 		modelMap.addAttribute("imgBPMN", imgBPMN);
 		return "admin/order_bpmn";
-	}
-
-	@RequestMapping(value = "/cancle/{id}")
-	public String cancleOrder(@PathVariable("id") Long id) {
-
-		return "Hủy đơn hàng thành công";
 	}
 
 }

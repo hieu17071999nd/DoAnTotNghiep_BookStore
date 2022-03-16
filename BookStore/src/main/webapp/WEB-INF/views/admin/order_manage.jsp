@@ -56,9 +56,12 @@
                                         <th>Tổng tiền</th>
                                         <th>Địa chỉ giao hàng</th>
                                         <th>Trạng thái</th>
-                                        <th>Hành động</th>
+                                        <th>Duyệt đơn hàng</th>
+                                        <th>Hủy đơn hàng</th>
+                                        <th>Chuyển hàng cho nhân viên vận chuyển</th>
+                                        <th>Xác nhận giao hàng thành công</th>
+                                        <th>Xem luồng đơn hàng</th>
                                         <th>Chi tiết đơn hàng</th>
-    <%--                                    <th>Xem luồng đơn hàng</th>--%>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -87,10 +90,25 @@
                                                 <a href="<c:url value="/approve/${order.id}"/>" title="Duyệt đơn hàng">
                                                     <i class="fas fa-key"></i>
                                                 </a>
+                                            </td>
+                                            <td>
+                                                <a href="<c:url value="/cancel/${order.id}"/>" class="delete" title="Hủy đơn hàng">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="<c:url value="/transportOrder/${order.id}"/>" class="delete" title="Chuyển hàng cho nhân viên vận chuyển">
+                                                    <i class="fas fa-train"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="<c:url value="/successfulDeliveryConfirm/${order.id}"/>" class="delete" title="Xác nhận giao hàng thành công">
+                                                    <i class="fas fa-toolbox"></i>
+                                                </a>
+                                            </td>
+                                            <td>
                                                 <a href="<c:url value="/getXMLOrder/${order.id}"/>" title="Xem luồng đơn hàng">
                                                     <i class="fas fa-project-diagram"></i>
-                                                </a>
-                                                <a href="<c:url value="/cancle/${order.id}"/>" class="delete" title="Hủy đơn hàng"><i class="fas fa-trash-alt"></i>
                                                 </a>
                                             </td>
                                             <td>

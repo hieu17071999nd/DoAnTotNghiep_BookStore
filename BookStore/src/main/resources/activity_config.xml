@@ -3,12 +3,77 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+<!--    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">-->
+<!--        <property name="dataSource" ref="dataSource" />-->
+<!--        <property name="transactionManager" ref="transactionManager" />-->
+<!--        <property name="databaseSchemaUpdate" value="true" />-->
+<!--        <property name="jobExecutorActivate" value="true" />-->
+<!--        <property name="enableDatabaseEventLogging" value="true" />-->
+<!--        <property name="customFormTypes">-->
+<!--            <list>-->
+<!--                <bean class="org.activiti.explorer.form.UserFormType"/>-->
+<!--                <bean class="org.activiti.explorer.form.ProcessDefinitionFormType"/>-->
+<!--                <bean class="org.activiti.explorer.form.MonthFormType"/>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--        <property name="mailServerUseTLS" value="true" />&lt;!&ndash;This is important if you use Gmail as your hoster &ndash;&gt;-->
+<!--        <property name="mailServerHost" value="smtp.gmail.com" />-->
+<!--        <property name="mailServerPort" value="587" />-->
+<!--        <property name="mailServerUsername" value="hieu79862@nuce.edu.vn" />-->
+<!--        <property name="mailServerPassword" value="hieukaito99a@"/>-->
+<!--    </bean>-->
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" >
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/book_store2" />
-        <property name="username" value="root" />
-        <property name="password" value="1999" />
-        <property name="defaultAutoCommit" value="false" />
-    </bean>
+<!--    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" >-->
+<!--        <property name="driverClassName" value="com.mysql.jdbc.Driver" />-->
+<!--        <property name="url" value="jdbc:mysql://localhost:3306/book_store2" />-->
+<!--        <property name="username" value="root" />-->
+<!--        <property name="password" value="1999" />-->
+<!--        <property name="defaultAutoCommit" value="false" />-->
+<!--    </bean>-->
+
+<!--    <bean name="processEngineConfiguration" id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">-->
+<!--        &lt;!&ndash;Cau hinh email &ndash;&gt;-->
+<!--        <property name="mailServerHost" value="smtp.gmail.com"/>-->
+<!--        <property name="mailServerPort" value="587"/>-->
+<!--        <property name="mailServerUsername" value="hieu79862@nuce.edu.vn"/>-->
+<!--        <property name="mailServerPassword" value="hieukaito99a@"/>-->
+<!--        <property name="mailServerDefaultFrom" value="hieu79862nd@gmail.com"/>-->
+<!--        <property name="mailServerUseSSL" value="true"/>-->
+<!--        <property name="mailServerUseTLS" value="false"/>-->
+<!--    </bean>-->
+
+<!--    <bean primary="true" id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">-->
+<!--        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>-->
+<!--    </bean>-->
+
+<!--    <bean primary="true" id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">-->
+<!--        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>-->
+<!--    </bean>-->
+
+    <bean primary="true" id="repositoryService" factory-bean="processEngine"
+          factory-method="getRepositoryService"/>
+    <bean primary="true" id="runtimeService" factory-bean="processEngine"
+          factory-method="getRuntimeService"/>
+    <bean primary="true" id="taskService" factory-bean="processEngine"
+          factory-method="getTaskService"/>
+    <bean primary="true" id="historyService" factory-bean="processEngine"
+          factory-method="getHistoryService"/>
+    <bean primary="true" id="managementService" factory-bean="processEngine"
+          factory-method="getManagementService"/>
+
+<!--    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">-->
+<!--        <property name="host" value="smtp.gmail.com"/>-->
+<!--        <property name="port" value="587"/>-->
+<!--        <property name="username" value="hieu79862@nuce.edu.vn"/>-->
+<!--        <property name="password" value="hieukaito99a@"/>-->
+
+<!--        <property name="javaMailProperties">-->
+<!--            <props>-->
+<!--                <prop key="mail.smtp.auth">true</prop>-->
+<!--                <prop key="mail.smtp.starttls.enable">true</prop>-->
+<!--                <prop key="mail.transport.protocol">smtp</prop>-->
+<!--                <prop key="mail.debug">true</prop>-->
+<!--            </props>-->
+<!--        </property>-->
+<!--    </bean>-->
 </beans>

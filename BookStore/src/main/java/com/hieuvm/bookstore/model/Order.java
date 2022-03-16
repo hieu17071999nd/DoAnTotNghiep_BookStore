@@ -36,8 +36,9 @@ public class Order {
     Trạng thái đơn hàng
     0. Đơn hàng đã bị hủy
     1. Hiệu lực, đã đặt, chờ phê duyệt
-    2. Chờ giao hàng
-    3. Đã giao hàng thành công
+    2. Đã phê duyệt, chờ đợi giao cho nhân viên vận chuyển
+    3. Đã giao cho nhân viên vận chuyển, chờ giao hàng
+    4. Đã giao hàng thành công
      */
     @Column(name = "STATUS")
     private Long status;

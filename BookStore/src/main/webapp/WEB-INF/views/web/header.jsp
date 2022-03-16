@@ -49,7 +49,7 @@
                                                 </div>
                                                 <div class="tg-btns">
                                                     <a class="tg-btn tg-active" href="<c:url value="/donhangdangdat"/>">Đơn hàng đang đặt</a>
-                                                    <a class="tg-btn tg-active" href="<c:url value="/donhangdamua"/>">Đơn hàng đã mua</a>
+                                                    <a class="tg-btn tg-active" href="<c:url value="/donhangdamua"/>">Sản phẩm đã mua</a>
                                                 </div>
                                             </div>
                                         </div>
