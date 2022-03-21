@@ -78,22 +78,17 @@ public class ProcessOrderController {
 		HttpSession session = request.getSession();
 		List<ItemDto> itemDtos = (List<ItemDto>) session.getAttribute("itemDtos");
 		Long totalNumber = 0L;
-		Boolean checkProduct = true;
 		for (ItemDto itemDto : itemDtos) {
 			totalNumber += itemDto.getItem().getNumber() * itemDto.getProduct().getPrice();
 			// check number product
 			Item item = itemDto.getItem();
 			Product productOld = productService.getById(itemDto.getProduct().getId());
-			if (item.getNumber() > productOld.getQuantily()) {
-				checkProduct = false;
-			}
 		}
 		Order order = new Order();
 		order.setCustomerId(customerId);
 		order.setDeliveryAddress(address); //dia chi giao hang
 		order.setNumerOrderItem(Long.valueOf(itemDtos.size())); // so san pham mua
 		order.setTotal(totalNumber);
-		order.setCheckProduct(checkProduct);
 		order.setStatus(1L);
 		order.setCreateDate(new java.util.Date());
 		processOrderService.startBookOrder(order);
@@ -129,21 +124,19 @@ public class ProcessOrderController {
 		HttpSession session = request.getSession();
 		String username= (String) session.getAttribute("username");
 		Staff staff = staffService.getStaffByUsername(username);
-		Order order = orderService.getById(id);
-		order.setCheckProduct(true);
-		order.setStatus(2L);
-		orderService.save(order);
 		Map<String, Object> variables = new HashMap<>();
-		variables.put("var_checkNumberProduct2", order.getCheckProduct());
-		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrderTask5").list();
+		variables.put("var_approveOrder", true);
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrdersTask").list();
 		for (Task task: tasks) {
 			taskService.complete(task.getId(), variables);
 		}
+		Order order = orderService.getById(id);
+		order.setStatus(2L);
+		orderService.save(order);
 		List<Order> orders = orderService.getAllByStatus(1L);
 		modelMap.addAttribute("orders",orders);
 		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Phê duyệt đơn hàng thành công");
-//		return "admin/order_manage";
 		return "redirect:/admin/order/get";
 	}
 
@@ -152,23 +145,21 @@ public class ProcessOrderController {
 		HttpSession session = request.getSession();
 		String username= (String) session.getAttribute("username");
 		Staff staff = staffService.getStaffByUsername(username);
-		Order order = orderService.getById(id);
-		order.setCheckProduct(false);
-		order.setStatus(0L);
-		orderService.save(order);
 		Map<String, Object> variables = new HashMap<>();
-		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrderTask").list();
+		variables.put("var_approveOrder", false);
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrdersTask").list();
 		for (Task task: tasks) {
-			variables.put("var_checkNumberProduct2", order.getCheckProduct());
 			taskService.complete(task.getId(), variables);
 		}
+		Order order = orderService.getById(id);
+		order.setStatus(0L);
+		orderService.save(order);
 		List<Order> orders = orderService.getAllByStatus(1L);
 		modelMap.addAttribute("orders", orders);
 		int numPage= (int) Math.ceil((double) orders.size()/2);
 		modelMap.addAttribute("num_page",numPage);
 		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Hủy đơn hàng thành công");
-//		return "admin/order_manage";
 		return "redirect:/admin/order/get";
 	}
 
@@ -177,22 +168,20 @@ public class ProcessOrderController {
 		HttpSession session = request.getSession();
 		String username= (String) session.getAttribute("username");
 		Staff staff = staffService.getStaffByUsername(username);
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("assignedStaffTransportTask").list();
+		for (Task task: tasks) {
+			taskService.complete(task.getId());
+		}
 		Order order = orderService.getById(id);
 		order.setStatus(3L);
 		order.setStaffId(staff.getId());
 		orderService.save(order);
-		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("assignedStaffTransportTask").list();
-		List<Task> tasks2 = taskService.createTaskQuery().taskAssignee("assignedStaffTransportTask").list();
-		for (Task task: tasks) {
-			taskService.complete(task.getId());
-		}
 		List<Order> orders = orderService.getAllByStatus(1L);
 		modelMap.addAttribute("orders", orders);
 		int numPage= (int) Math.ceil((double) orders.size()/2);
 		modelMap.addAttribute("num_page",numPage);
 		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Đã giao cho nhân viên vận chuyển");
-//		return "admin/order_manage";
 		return "redirect:/admin/order/get";
 	}
 
@@ -201,21 +190,22 @@ public class ProcessOrderController {
 		HttpSession session = request.getSession();
 		String username= (String) session.getAttribute("username");
 		Staff staff = staffService.getStaffByUsername(username);
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("var_delivery", true);
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("successfulDeliveryConfirmationTask").list();
+		for (Task task: tasks) {
+			taskService.complete(task.getId(), variables);
+		}
 		Order order = orderService.getById(id);
 		order.setStatus(4L);
 		order.setStaffId(staff.getId());
 		orderService.save(order);
-		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("successfulDeliveryConfirmationTask").list();
-		for (Task task: tasks) {
-			taskService.complete(task.getId());
-		}
 		List<Order> orders = orderService.getAllByStatus(1L);
 		modelMap.addAttribute("orders", orders);
 		int numPage= (int) Math.ceil((double) orders.size()/2);
 		modelMap.addAttribute("num_page",numPage);
 		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Đơn hàng đã được giao thành công");
-//		return "admin/order_manage";
 		return "redirect:/admin/order/get";
 	}
 

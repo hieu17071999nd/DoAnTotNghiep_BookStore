@@ -78,11 +78,20 @@
                                             <td>${order.deliveryAddress}</td>
                                             <td>
                                                 <c:choose>
+                                                    <c:when test="${order.status == 0}">
+                                                        <c:out value="Không hiệu lực"/>
+                                                    </c:when>
                                                     <c:when test="${order.status == 1}">
                                                         <c:out value="Đã đặt hàng"/>
                                                     </c:when>
-                                                    <c:when test="${order.status == 0}">
-                                                        <c:out value="Không hiệu lực"/>
+                                                    <c:when test="${order.status == 2}">
+                                                        <c:out value="Đã phê duyệt"/>
+                                                    </c:when>
+                                                    <c:when test="${order.status == 3}">
+                                                        <c:out value="Đã chuyển cho shipper"/>
+                                                    </c:when>
+                                                    <c:when test="${order.status == 4}">
+                                                        <c:out value="Giao hàng thành công"/>
                                                     </c:when>
                                                 </c:choose>
                                             </td>

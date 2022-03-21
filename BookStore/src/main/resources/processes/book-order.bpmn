@@ -2,45 +2,22 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="Examples">
   <process id="bookOrder" name="bookOrder" isExecutable="true">
     <startEvent id="start" name="Start"></startEvent>
-    <endEvent id="theEnd"></endEvent>
     <sequenceFlow id="flow1" sourceRef="start" targetRef="receiveOrderTask"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow2" sourceRef="receiveOrderTask" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="approveOrderTask5" name="Duyệt đơn hàng" activiti:assignee="hieu" activiti:candidateUsers="admin" activiti:candidateGroups="staffs"></userTask>
-    <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="approveOrderTask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_checkNumberProduct')) == true}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="receiveOrderTask" name="Nhận đơn hàng" activiti:class="com.hieuvm.bookstore.task.ReceiveOrder">
+    <userTask id="approveOrdersTask" name="Duyệt đơn hàng" activiti:assignee="hieu" activiti:candidateUsers="admin" activiti:candidateGroups="staffs"></userTask>
+    <serviceTask id="receiveOrderTask" name="Nhận đơn hàng" activiti:async="true" activiti:class="com.hieuvm.bookstore.task.ReceiveOrder">
       <documentation>Lưu trữ thông tin đơn hàng vào các bảng order</documentation>
     </serviceTask>
     <serviceTask id="substractInventoryTask" name="Trừ kho" activiti:async="true" activiti:class="com.hieuvm.bookstore.task.SubtractStockTask"></serviceTask>
-    <serviceTask id="cancelOrderTask" name="Hủy đơn hàng" activiti:class="com.hieuvm.bookstore.task.CancelOrderTask"></serviceTask>
-    <sequenceFlow id="flow12" sourceRef="exclusivegateway1" targetRef="timerintermediatecatchevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_checkNumberProduct')) == false}]]></conditionExpression>
-    </sequenceFlow>
-    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
-      <timerEventDefinition>
-        <timeDuration>PT5S</timeDuration>
-      </timerEventDefinition>
-    </intermediateCatchEvent>
-    <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="cancelOrderTask"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway2" targetRef="substractInventoryTask">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_checkNumberProduct2')) == true}]]></conditionExpression>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway2" targetRef="mailtask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_approveOrder')) == true}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="sendEmailCancel" name="Gửi email hủy đơn hàng" activiti:async="true" activiti:class="com.hieuvm.bookstore.task.SendEmailCancelServiceTask"></serviceTask>
-    <sequenceFlow id="flow17" sourceRef="exclusivegateway2" targetRef="sendEmailCancel">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_checkNumberProduct2')) == false}]]></conditionExpression>
+    <sequenceFlow id="flow17" sourceRef="exclusivegateway2" targetRef="cancelOrderTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_approveOrder')) == false}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow18" sourceRef="sendEmailCancel" targetRef="theEnd"></sequenceFlow>
-    <sequenceFlow id="flow19" sourceRef="substractInventoryTask" targetRef="mailtask2"></sequenceFlow>
-    <sequenceFlow id="flow20" sourceRef="mailtask2" targetRef="assignedStaffTransportTask"></sequenceFlow>
-    <userTask id="successfulDeliveryConfirmationTask" name="Giao hàng thành công"></userTask>
-    <sequenceFlow id="flow21" sourceRef="assignedStaffTransportTask" targetRef="successfulDeliveryConfirmationTask"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="successfulDeliveryConfirmationTask" targetRef="theEnd"></sequenceFlow>
+    <userTask id="successfulDeliveryConfirmationTask" name="Giao hàng cho khách hàng"></userTask>
     <userTask id="assignedStaffTransportTask" name="Chuyển hàng cho nhân viên giao hàng"></userTask>
-    <sequenceFlow id="flow23" sourceRef="cancelOrderTask" targetRef="theEnd"></sequenceFlow>
-    <serviceTask id="mailtask1" name="Gửi mail xác nhận" activiti:type="mail">
+    <serviceTask id="mailtask1" name="Gửi mail xác nhận duyệt đơn hàng thành công" activiti:type="mail">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[hieumv99nd@gmail.com]]></activiti:string>
@@ -53,16 +30,14 @@
         </activiti:field>
         <activiti:field name="html">
           <activiti:string><![CDATA[<html>
-            <body>
-              Hello, Ban da duyet don hang thanh cong.
-            </body>
-</html>]]></activiti:string>
+	            <body>
+	              Hello, Ban da duyet don hang thanh cong.
+	            </body>
+			</html>]]></activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow24" sourceRef="approveOrderTask5" targetRef="mailtask1"></sequenceFlow>
-    <sequenceFlow id="flow25" sourceRef="mailtask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="mailtask2" name="Gửi mail đặt hàng thành công" activiti:type="mail">
+    <serviceTask id="mailtask2" name="Gửi mail thông báo đơn hàng đã giao cho đơn vị vận chuyển" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
           <activiti:string><![CDATA[hieumvnucek62@gmail.com]]></activiti:string>
@@ -82,118 +57,183 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <sequenceFlow id="flow26" sourceRef="substractInventoryTask" targetRef="assignedStaffTransportTask"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="assignedStaffTransportTask" targetRef="mailtask2"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="mailtask2" targetRef="successfulDeliveryConfirmationTask"></sequenceFlow>
+    <serviceTask id="cancelOrderTask" name="Hủy đơn hàng" activiti:class="com.hieuvm.bookstore.task.CancelOrderTask"></serviceTask>
+    <sequenceFlow id="flow33" sourceRef="receiveOrderTask" targetRef="approveOrdersTask"></sequenceFlow>
+    <serviceTask id="mailtask3" name="Gửi email hủy đơn hàng" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[hieumvnucek62@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[hieumv99nd@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Xác nhận hủy đơn hàng]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="html">
+          <activiti:string><![CDATA[<html>
+	            <body>
+	              Hello, đơn hàng của bạn đã bị hủy. Xin lỗi vì sơ suất của cửa hàng.
+	            </body>
+			</html>]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow35" sourceRef="approveOrdersTask" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="mailtask1" targetRef="substractInventoryTask"></sequenceFlow>
+    <serviceTask id="mailtask6" name="Gửi mail thông báo đơn hàng được giao thành công" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[hieumvnucek62@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[hieumv99nd@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="html">
+          <activiti:string><![CDATA[<html>
+            <body>
+              Hello, đơn hàng của bạn đã dược giao thành công.
+		Cảm ơn bạn đã ửng hộ cửa hàng.
+            </body>
+</html>]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Thông báo nhận hàng]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow39" sourceRef="successfulDeliveryConfirmationTask" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="exclusivegateway3" targetRef="cancelOrderTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_delivery')) == false}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow42" sourceRef="mailtask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="exclusivegateway3" targetRef="mailtask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(execution.getVariable('var_delivery')) == true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow44" sourceRef="mailtask6" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="returnStockTask" name="Thu hồi kho" activiti:async="true" activiti:class="com.hieuvm.bookstore.task.ReturnStockTask"></serviceTask>
+    <sequenceFlow id="flow45" sourceRef="cancelOrderTask" targetRef="returnStockTask"></sequenceFlow>
+    <sequenceFlow id="flow46" sourceRef="returnStockTask" targetRef="mailtask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_bookOrder">
     <bpmndi:BPMNPlane bpmnElement="bookOrder" id="BPMNPlane_bookOrder">
       <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
-        <omgdc:Bounds height="35.0" width="35.0" x="12.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="11.0" y="183.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="theEnd" id="BPMNShape_theEnd">
-        <omgdc:Bounds height="35.0" width="35.0" x="1045.0" y="158.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="218.0" y="147.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="approveOrderTask5" id="BPMNShape_approveOrderTask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="264.0" y="78.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="approveOrdersTask" id="BPMNShape_approveOrdersTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="173.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="receiveOrderTask" id="BPMNShape_receiveOrderTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="70.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="90.0" y="173.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="substractInventoryTask" id="BPMNShape_substractInventoryTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="24.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="cancelOrderTask" id="BPMNShape_cancelOrderTask">
-        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="230.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="282.0" y="240.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="630.0" y="93.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="518.0" y="85.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sendEmailCancel" id="BPMNShape_sendEmailCancel">
-        <omgdc:Bounds height="71.0" width="105.0" x="580.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="380.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="successfulDeliveryConfirmationTask" id="BPMNShape_successfulDeliveryConfirmationTask">
-        <omgdc:Bounds height="66.0" width="105.0" x="1010.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="66.0" width="105.0" x="1111.0" y="88.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="assignedStaffTransportTask" id="BPMNShape_assignedStaffTransportTask">
-        <omgdc:Bounds height="66.0" width="105.0" x="870.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="66.0" width="105.0" x="790.0" y="88.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="390.0" y="78.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="111.0" x="471.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask2" id="BPMNShape_mailtask2">
-        <omgdc:Bounds height="66.0" width="105.0" x="730.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="93.0" width="105.0" x="940.0" y="74.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="cancelOrderTask" id="BPMNShape_cancelOrderTask">
+        <omgdc:Bounds height="71.0" width="105.0" x="630.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask3" id="BPMNShape_mailtask3">
+        <omgdc:Bounds height="63.0" width="105.0" x="940.0" y="264.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask6" id="BPMNShape_mailtask6">
+        <omgdc:Bounds height="82.0" width="105.0" x="1215.0" y="181.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="1143.0" y="201.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1360.0" y="204.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="returnStockTask" id="BPMNShape_returnStockTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="790.0" y="268.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="47.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="70.0" y="167.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="175.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="218.0" y="167.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="238.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="238.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="264.0" y="105.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="238.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="238.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="256.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="282.0" y="257.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="317.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="360.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="46.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="90.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="538.0" y="85.0"></omgdi:waypoint>
-        <omgdi:waypoint x="538.0" y="52.0"></omgdi:waypoint>
-        <omgdi:waypoint x="580.0" y="51.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="471.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="538.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="537.0" y="172.0"></omgdi:waypoint>
-        <omgdi:waypoint x="580.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="685.0" y="175.0"></omgdi:waypoint>
-        <omgdi:waypoint x="851.0" y="175.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1045.0" y="175.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="735.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="121.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="685.0" y="51.0"></omgdi:waypoint>
-        <omgdi:waypoint x="730.0" y="53.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="895.0" y="121.0"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="835.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="870.0" y="53.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="1045.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1111.0" y="121.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="975.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1010.0" y="53.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="195.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="1062.0" y="86.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1062.0" y="120.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1062.0" y="158.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="345.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="465.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1062.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1062.0" y="193.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="582.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="369.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="105.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="1163.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1163.0" y="201.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="495.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="518.0" y="105.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="1143.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="1045.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1377.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1377.0" y="239.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="1183.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1215.0" y="222.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="1320.0" y="222.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1360.0" y="221.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="735.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="295.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="895.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

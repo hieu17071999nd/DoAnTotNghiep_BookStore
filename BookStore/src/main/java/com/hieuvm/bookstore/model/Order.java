@@ -29,9 +29,6 @@ public class Order {
     @Column(name = "TOTAL")
     private Long total;
 
-    @Column(name = "CHECK_PRODUCT")
-    private Boolean checkProduct;
-
     /*
     Trạng thái đơn hàng
     0. Đơn hàng đã bị hủy
@@ -97,14 +94,6 @@ public class Order {
 
     public void setTotal(Long total) {
         this.total = total;
-    }
-
-    public Boolean getCheckProduct() {
-        return checkProduct;
-    }
-
-    public void setCheckProduct(Boolean checkProduct) {
-        this.checkProduct = checkProduct;
     }
 
     public Long getStatus() {

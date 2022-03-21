@@ -25,15 +25,6 @@ public class ProcessOrderService {
 	private TaskService taskService;
 
 	@Autowired
-	private RepositoryService repositoryService;
-
-	@Autowired
-	private ProductService productService;
-
-	@Autowired
-	private OrderItemService orderItemService;
-
-	@Autowired
 	private OrderService orderService;
 
 	@PostConstruct
@@ -43,13 +34,7 @@ public class ProcessOrderService {
 	}
 
 	public void startBookOrder(Order order) {
-		Map<String, Object> variables = new HashMap<>();
-		variables.put("var_checkNumberProduct", order.getCheckProduct());
-
-//		variables.put("emailAddressCustomer", "hieumv99nd@gmail.com");
-//		variables.put("customerName", "hieu dtrai");
-
-		String bpId = runtimeService.startProcessInstanceByKey("bookOrder", variables).getProcessInstanceId();
+		String bpId = runtimeService.startProcessInstanceByKey("bookOrder").getProcessInstanceId();
 		order.setId(Long.parseLong(bpId));
 		orderService.insert(order);
 	}

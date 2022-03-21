@@ -1,4 +1,4 @@
-package com.hieuvm.bookstore.controller;
+package com.hieuvm.bookstore.config;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

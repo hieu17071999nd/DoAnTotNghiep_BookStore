@@ -8,10 +8,9 @@ public class ReceiveOrderTask extends AbstractTask2 {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        //luu thong tin don hang vao bang orderItem
-        Long numberProductOrder = 1L;
-        execution.setVariable(String.valueOf(numberProductOrder), numberProductOrder);
+        /*
+        Tiếp nhận đơn hàng: không xử lý gì cả
+         */
 
-        execution.getVariable(String.valueOf(numberProductOrder));
     }
 }
