@@ -72,12 +72,12 @@
                                         <form:input path="phone" class="form-control" value="${staff.phone}" required="true"/>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-12 col-form-label">Ảnh</label>
-                                    <div class="col-sm-8">
-                                        <form:input path="avatar" class="form-control" value="${staff.avatar}" required="true"/>
-                                    </div>
-                                </div>
+<%--                                <div class="form-group row">--%>
+<%--                                    <label class="col-sm-12 col-form-label">Ảnh</label>--%>
+<%--                                    <div class="col-sm-8">--%>
+<%--                                        <form:input path="avatar" class="form-control" value="${staff.avatar}" required="true"/>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
                                 <div class="form-group row">
                                     <label class="col-sm-12 col-form-label">Tên đăng nhập</label>
                                     <div class="col-sm-8">
@@ -88,6 +88,28 @@
                                     <label class="col-sm-12 col-form-label">Mật khẩu</label>
                                     <div class="col-sm-8">
                                         <form:input path="password" class="form-control" value="${staff.password}" required="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-12 col-form-label">Chức vụ</label>
+                                    <div class="col-sm-8">
+                                        <select name="level" class="form-control" required="true">
+                                            <c:if test="${staff.level == 1}">
+                                                <option value="1">Admin</option>
+                                                <option value="2">Nhân viên quản lý</option>
+                                                <option value="3">Nhân viên giao hàng</option>
+                                            </c:if>
+                                            <c:if test="${staff.level == 2}">
+                                                <option value="2">Nhân viên quản lý</option>
+                                                <option value="1">Admin</option>
+                                                <option value="3">Nhân viên giao hàng</option>
+                                            </c:if>
+                                            <c:if test="${staff.level == 3}">
+                                                <option value="3">Nhân viên giao hàng</option>
+                                                <option value="1">Admin</option>
+                                                <option value="2">Nhân viên quản lý</option>
+                                            </c:if>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">

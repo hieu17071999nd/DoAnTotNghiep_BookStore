@@ -17,7 +17,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAllByStatus(Long status) {
-        return orderRepo.findAllByStatus(1L);
+        return orderRepo.findAllByStatus(status);
     }
 
     @Override

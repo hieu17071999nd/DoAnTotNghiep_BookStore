@@ -20,12 +20,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Quản lý đơn hàng</h1>
+                            <h1 class="m-0">Quản lý đơn hàng giao cho shipper</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Quản lý đơn hàng</li>
+                                <li class="breadcrumb-item active">Quản lý đơn hàng giao cho shipper</li>
                             </ol>
                         </div>
                     </div>
@@ -35,17 +35,17 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Bảng thống kê đơn hàng</h3>
+                            <h3 class="card-title">Bảng thống kê đơn hàng giao cho shipper</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
                             <p style="color:red;">${msg}</p>
                             <div class="table-title">
                                 <div class="row">
-                                    <div class="col-sm-8"><h2>Đơn hàng đã đặt</h2></div>
+                                    <div class="col-sm-8"><h2>Đơn hàng giao cho shipper</h2></div>
                                 </div>
                             </div>
-                            <form action="<c:url value='/admin/order/get2'/>" id="formSubmit" method="get">
+                            <form action="<c:url value='/admin/order/transport/shipper/get2'/>" id="formSubmit" method="get">
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -56,6 +56,7 @@
                                         <th>Tổng tiền</th>
                                         <th>Địa chỉ giao hàng</th>
                                         <th>Trạng thái</th>
+                                        <th>Chuyển hàng cho nhân viên vận chuyển</th>
                                         <th>Xem luồng đơn hàng</th>
                                         <th>Chi tiết đơn hàng</th>
                                     </tr>
@@ -90,6 +91,11 @@
                                                         <c:out value="Giao hàng thành công"/>
                                                     </c:when>
                                                 </c:choose>
+                                            </td>
+                                            <td>
+                                                <a href="<c:url value="/choose/transportOrder/${order.id}"/>" class="delete" title="Chuyển hàng cho nhân viên vận chuyển">
+                                                    <i class="fas fa-train"></i>
+                                                </a>
                                             </td>
                                             <td>
                                                 <a href="<c:url value="/getXMLOrder/${order.id}"/>" title="Xem luồng đơn hàng">

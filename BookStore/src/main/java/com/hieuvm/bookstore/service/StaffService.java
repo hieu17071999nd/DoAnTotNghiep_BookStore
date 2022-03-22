@@ -13,6 +13,8 @@ public interface StaffService {
 
     List<Staff> getAllByStatus(Long status);
 
+    List<Staff> findAllByLevelAndStatus(Long level, Long status);
+
     Boolean insert(Staff staff);
 
     Staff getById(Long id);

@@ -72,13 +72,13 @@
                                         <input type="text" name="phone" class="form-control" required>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <input type="hidden" name="id">
-                                    <label class="col-sm-12 col-form-label">Ảnh</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="avatar" class="form-control" required>
-                                    </div>
-                                </div>
+<%--                                <div class="form-group row">--%>
+<%--                                    <input type="hidden" name="id">--%>
+<%--                                    <label class="col-sm-12 col-form-label">Ảnh</label>--%>
+<%--                                    <div class="col-sm-8">--%>
+<%--                                        <input type="text" name="avatar" class="form-control" required>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
                                 <div class="form-group row">
                                     <input type="hidden" name="id">
                                     <label class="col-sm-12 col-form-label">Tên đăng nhập</label>
@@ -91,6 +91,16 @@
                                     <label class="col-sm-12 col-form-label">Mật khẩu</label>
                                     <div class="col-sm-8">
                                         <input type="text" name="password" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-12 col-form-label">Chức vụ</label>
+                                    <div class="col-sm-8">
+                                        <select name="level" class="form-control" required="true">
+                                            <option value="1">Admin</option>
+                                            <option value="2">Nhân viên quản lý</option>
+                                            <option value="3">Nhân viên giao hàng</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">

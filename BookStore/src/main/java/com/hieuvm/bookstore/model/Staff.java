@@ -28,6 +28,9 @@ public class Staff extends BaseEntity {
     @Column(name = "PASSWORD")
     private String password;
 
+    @Column(name = "LEVEL")
+    private Long level;
+
     @Column(name = "STATUS")
     private Long status;
 
@@ -93,5 +96,13 @@ public class Staff extends BaseEntity {
 
     public void setStatus(Long status) {
         this.status = status;
+    }
+
+    public Long getLevel() {
+        return level;
+    }
+
+    public void setLevel(Long level) {
+        this.level = level;
     }
 }

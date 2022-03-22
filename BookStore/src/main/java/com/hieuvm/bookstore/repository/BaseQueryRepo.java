@@ -1,6 +1,7 @@
 package com.hieuvm.bookstore.repository;
 
 import com.hieuvm.bookstore.model.Category;
+import com.hieuvm.bookstore.model.Order;
 import com.hieuvm.bookstore.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -175,6 +176,38 @@ public class BaseQueryRepo {
         }
         List<Product> products = query.getResultList();
         return products;
+    }
+
+    public List<Order> getOrderShipper(Long status, String page, String maxPageItem) {
+        StringBuilder sql = new StringBuilder(" SELECT * FROM orders WHERE 1 = 1 ");
+        if (status != null) {
+            sql.append(" and status = :status ");
+        }
+        if (page != null) {
+            sql.append(" LIMIT :maxPageItem");
+        } else {
+            sql.append(" LIMIT 5 ");
+        }
+        if (maxPageItem != null) {
+            sql.append(" OFFSET  :page ");
+        } else {
+            sql.append(" OFFSET  0 ");
+        }
+        Query query = em.createNativeQuery(sql.toString(), Order.class);
+        if (status != null) {
+            query.setParameter("status", status);
+        }
+        if (page != null) {
+            Long a = Long.valueOf(page);
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("page", b * (a -1));
+        }
+        if (maxPageItem != null) {
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("maxPageItem", b);
+        }
+        List<Order> orders = query.getResultList();
+        return orders;
     }
 
 }

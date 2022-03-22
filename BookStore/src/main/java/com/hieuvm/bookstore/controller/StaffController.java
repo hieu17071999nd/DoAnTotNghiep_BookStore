@@ -54,7 +54,7 @@ public class StaffController {
                          @RequestParam("name") String name,
                          @RequestParam("address") String address,
                          @RequestParam("phone") Long phone,
-                         @RequestParam("avatar") String avatar,
+                         @RequestParam("level") Long level,
                          @RequestParam("username") String username,
                          @RequestParam("password") String password,
                          @RequestParam("status") Long status) {
@@ -63,7 +63,7 @@ public class StaffController {
         staff.setName(name);
         staff.setAddress(address);
         staff.setPhone(phone);
-        staff.setAvatar(avatar);
+        staff.setLevel(level);
         staff.setUsername(username);
         staff.setPassword(password);
         staff.setStatus(status);

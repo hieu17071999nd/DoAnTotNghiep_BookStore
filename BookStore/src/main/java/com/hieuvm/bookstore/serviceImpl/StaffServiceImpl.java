@@ -20,6 +20,11 @@ public class StaffServiceImpl implements StaffService {
         return staffRepo.findAllByStatus(1L);
     }
 
+    @Override
+    public List<Staff> findAllByLevelAndStatus(Long level, Long status) {
+        return staffRepo.findAllByLevelAndStatus(level, status);
+    }
+
     public List<Staff> getAll(Pageable pageable) {
         return staffRepo.findAll(pageable).getContent();
     }

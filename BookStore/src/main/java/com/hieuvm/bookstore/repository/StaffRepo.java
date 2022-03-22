@@ -9,6 +9,8 @@ public interface StaffRepo extends JpaRepository<Staff, Long> {
 
     List<Staff> findAllByStatus(Long status);
 
+    List<Staff> findAllByLevelAndStatus(Long level, Long status);
+
     Staff getStaffByUsernameAndPassword(String userName, String password);
 
     Staff getStaffByUsername(String userName);

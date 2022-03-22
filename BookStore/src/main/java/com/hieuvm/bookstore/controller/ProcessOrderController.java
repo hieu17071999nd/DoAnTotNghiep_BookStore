@@ -2,6 +2,7 @@ package com.hieuvm.bookstore.controller;
 
 import com.hieuvm.bookstore.DTO.ItemDto;
 import com.hieuvm.bookstore.model.*;
+import com.hieuvm.bookstore.repository.BaseQueryRepo;
 import com.hieuvm.bookstore.repository.EmployeeRepository;
 import com.hieuvm.bookstore.repository.StaffRepo;
 import com.hieuvm.bookstore.service.*;
@@ -15,10 +16,7 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +69,11 @@ public class ProcessOrderController {
 	@Autowired
 	private RepositoryService repositoryService;
 
+	@Autowired
+	private BaseQueryRepo baseQueryRepo;
+
+	// tao don hang moi cua khach hang
+
 	@RequestMapping(value = "/processOrder")
 	public String checkout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		Long customerId = Long.parseLong(request.getParameter("customer_id"));
@@ -119,6 +122,8 @@ public class ProcessOrderController {
 		return "redirect:/thanh-toan";
 	}
 
+	// phe duyet don hang
+
 	@RequestMapping(value = "/approve/{id}")
 	public String approveOrder(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
 		HttpSession session = request.getSession();
@@ -163,8 +168,17 @@ public class ProcessOrderController {
 		return "redirect:/admin/order/get";
 	}
 
-	@RequestMapping(value = "/transportOrder/{id}")
-	public String transportOrder(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
+	//chuyen giao cho don vi van chuyen
+
+	@RequestMapping(value = "/choose/transportOrder/{id}")
+	public String chooseTransportOrder(@PathVariable("id") Long id, ModelMap modelMap) {
+		modelMap.addAttribute("id", id);
+		modelMap.addAttribute("staffTransports", staffService.findAllByLevelAndStatus(3L, 1L));
+		return "admin/order_choose_transport";
+	}
+
+	@RequestMapping(value = "/transportOrder")
+	public String transportOrder(@RequestParam("id") Long id, @RequestParam("staff_id") Long staff_id, HttpServletRequest request, ModelMap modelMap) {
 		HttpSession session = request.getSession();
 		String username= (String) session.getAttribute("username");
 		Staff staff = staffService.getStaffByUsername(username);
@@ -174,16 +188,21 @@ public class ProcessOrderController {
 		}
 		Order order = orderService.getById(id);
 		order.setStatus(3L);
-		order.setStaffId(staff.getId());
+		order.setStaffId(staff_id);
 		orderService.save(order);
-		List<Order> orders = orderService.getAllByStatus(1L);
-		modelMap.addAttribute("orders", orders);
-		int numPage= (int) Math.ceil((double) orders.size()/2);
-		modelMap.addAttribute("num_page",numPage);
+
+		//quay lai trang
+		String page = request.getParameter("page");
+		String maxPageItem = request.getParameter("maxPageItem");
+		modelMap.addAttribute("list", baseQueryRepo.getOrderShipper(2L, page, maxPageItem));
+		int totalPage= (int) Math.ceil((double) orderService.getAllByStatus(2L).size()/5);
 		modelMap.addAttribute("page_id",1);
-		modelMap.addAttribute("msg", "Đã giao cho nhân viên vận chuyển");
-		return "redirect:/admin/order/get";
+		modelMap.addAttribute("totalPage",totalPage);
+		modelMap.addAttribute("page",1);
+		return "admin/order_transport_shipper";
 	}
+
+	// shipper giao hang
 
 	@RequestMapping(value = "/successfulDeliveryConfirm/{id}")
 	public String successfulDeliveryConfirm(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
@@ -206,9 +225,33 @@ public class ProcessOrderController {
 		modelMap.addAttribute("num_page",numPage);
 		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Đơn hàng đã được giao thành công");
-		return "redirect:/admin/order/get";
+		return "redirect:/admin/order/shipper/get";
 	}
 
+	@RequestMapping(value = "/cancel2/{id}")
+	public String cancelOrder2(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
+		HttpSession session = request.getSession();
+		String username= (String) session.getAttribute("username");
+		Staff staff = staffService.getStaffByUsername(username);
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("var_delivery", false);
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("successfulDeliveryConfirmationTask").list();
+		for (Task task: tasks) {
+			taskService.complete(task.getId(), variables);
+		}
+		Order order = orderService.getById(id);
+		order.setStatus(0L);
+		orderService.save(order);
+		List<Order> orders = orderService.getAllByStatus(1L);
+		modelMap.addAttribute("orders", orders);
+		int numPage= (int) Math.ceil((double) orders.size()/2);
+		modelMap.addAttribute("num_page",numPage);
+		modelMap.addAttribute("page_id",1);
+		modelMap.addAttribute("msg", "Hủy đơn hàng thành công");
+		return "redirect:/admin/order/shipper/get";
+	}
+
+	//	xem luong don hang
 	@RequestMapping(value = "/getXMLOrder/{id}")
 	public String getXMLOrder(@PathVariable("id") Long id, ModelMap modelMap) throws Exception {
 		//id ở đây là id của đơn hàng: bpId kiểu String

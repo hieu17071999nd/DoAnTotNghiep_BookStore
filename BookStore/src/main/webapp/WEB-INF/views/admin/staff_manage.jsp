@@ -62,9 +62,9 @@
                                         <th>Tên người dùng</th>
                                         <th>Địa chỉ</th>
                                         <th>Số điện thoại</th>
-                                        <th>Hình ảnh</th>
                                         <th>Tên đăng nhập</th>
                                         <th>Mật khẩu</th>
+                                        <th>Chức vụ</th>
                                         <th>Trạng thái</th>
                                         <th>Sửa</th>
                                         <th>Xóa</th>
@@ -82,9 +82,21 @@
                                             <td>${staff.name}</td>
                                             <td>${staff.address}</td>
                                             <td>${staff.phone}</td>
-                                            <td>${staff.avatar}</td>
                                             <td>${staff.username}</td>
                                             <td>${staff.password}</td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${staff.level == 1}">
+                                                        <c:out value="Admin"/>
+                                                    </c:when>
+                                                    <c:when test="${staff.level == 2}">
+                                                        <c:out value="Nhân viên quản lý"/>
+                                                    </c:when>
+                                                    <c:when test="${staff.level == 3}">
+                                                        <c:out value="Nhân viên giao hàng"/>
+                                                    </c:when>
+                                                </c:choose>
+                                            </td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${staff.status == 1}">
