@@ -73,7 +73,6 @@ public class ProcessOrderController {
 	private BaseQueryRepo baseQueryRepo;
 
 	// tao don hang moi cua khach hang
-
 	@RequestMapping(value = "/processOrder")
 	public String checkout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		Long customerId = Long.parseLong(request.getParameter("customer_id"));
@@ -123,7 +122,6 @@ public class ProcessOrderController {
 	}
 
 	// phe duyet don hang
-
 	@RequestMapping(value = "/approve/{id}")
 	public String approveOrder(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
 		HttpSession session = request.getSession();
@@ -138,11 +136,11 @@ public class ProcessOrderController {
 		Order order = orderService.getById(id);
 		order.setStatus(2L);
 		orderService.save(order);
-		List<Order> orders = orderService.getAllByStatus(1L);
-		modelMap.addAttribute("orders",orders);
-		modelMap.addAttribute("page_id",1);
+//		List<Order> orders = orderService.getAllByStatus(1L);
+//		modelMap.addAttribute("orders",orders);
+//		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Phê duyệt đơn hàng thành công");
-		return "redirect:/admin/order/get";
+		return "redirect:/admin/order/approve/get";
 	}
 
 	@RequestMapping(value = "/cancel/{id}")
@@ -159,17 +157,25 @@ public class ProcessOrderController {
 		Order order = orderService.getById(id);
 		order.setStatus(0L);
 		orderService.save(order);
-		List<Order> orders = orderService.getAllByStatus(1L);
-		modelMap.addAttribute("orders", orders);
-		int numPage= (int) Math.ceil((double) orders.size()/2);
-		modelMap.addAttribute("num_page",numPage);
-		modelMap.addAttribute("page_id",1);
+
+		List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+		if (orderItems != null) {
+			for (OrderItem orderItem : orderItems) {
+				orderItem.setStatus(0L);
+				orderItemService.save(orderItem);
+			}
+		}
+
+//		List<Order> orders = orderService.getAllByStatus(1L);
+//		modelMap.addAttribute("orders", orders);
+//		int numPage= (int) Math.ceil((double) orders.size()/2);
+//		modelMap.addAttribute("num_page",numPage);
+//		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Hủy đơn hàng thành công");
-		return "redirect:/admin/order/get";
+		return "redirect:/admin/order/approve/get";
 	}
 
 	//chuyen giao cho don vi van chuyen
-
 	@RequestMapping(value = "/choose/transportOrder/{id}")
 	public String chooseTransportOrder(@PathVariable("id") Long id, ModelMap modelMap) {
 		modelMap.addAttribute("id", id);
@@ -203,7 +209,6 @@ public class ProcessOrderController {
 	}
 
 	// shipper giao hang
-
 	@RequestMapping(value = "/successfulDeliveryConfirm/{id}")
 	public String successfulDeliveryConfirm(@PathVariable("id") Long id, HttpServletRequest request, ModelMap modelMap) {
 		HttpSession session = request.getSession();
@@ -219,11 +224,11 @@ public class ProcessOrderController {
 		order.setStatus(4L);
 		order.setStaffId(staff.getId());
 		orderService.save(order);
-		List<Order> orders = orderService.getAllByStatus(1L);
-		modelMap.addAttribute("orders", orders);
-		int numPage= (int) Math.ceil((double) orders.size()/2);
-		modelMap.addAttribute("num_page",numPage);
-		modelMap.addAttribute("page_id",1);
+//		List<Order> orders = orderService.getAllByStatus(1L);
+//		modelMap.addAttribute("orders", orders);
+//		int numPage= (int) Math.ceil((double) orders.size()/2);
+//		modelMap.addAttribute("num_page",numPage);
+//		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Đơn hàng đã được giao thành công");
 		return "redirect:/admin/order/shipper/get";
 	}
@@ -242,11 +247,20 @@ public class ProcessOrderController {
 		Order order = orderService.getById(id);
 		order.setStatus(0L);
 		orderService.save(order);
-		List<Order> orders = orderService.getAllByStatus(1L);
-		modelMap.addAttribute("orders", orders);
-		int numPage= (int) Math.ceil((double) orders.size()/2);
-		modelMap.addAttribute("num_page",numPage);
-		modelMap.addAttribute("page_id",1);
+
+		List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+		if (orderItems != null) {
+			for (OrderItem orderItem : orderItems) {
+				orderItem.setStatus(0L);
+				orderItemService.save(orderItem);
+			}
+		}
+
+//		List<Order> orders = orderService.getAllByStatus(1L);
+//		modelMap.addAttribute("orders", orders);
+//		int numPage= (int) Math.ceil((double) orders.size()/2);
+//		modelMap.addAttribute("num_page",numPage);
+//		modelMap.addAttribute("page_id",1);
 		modelMap.addAttribute("msg", "Hủy đơn hàng thành công");
 		return "redirect:/admin/order/shipper/get";
 	}

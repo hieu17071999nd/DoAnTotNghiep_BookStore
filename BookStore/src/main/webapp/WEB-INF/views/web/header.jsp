@@ -170,8 +170,8 @@
                                         </div>
                                     </li>
                                     <li style="width: 200px"><a href="<c:url value="/product/hot"/>">Sách nổi tiếng</a></li>
-                                    <li style="width: 200px"><a href="products.html">Sách đang giảm giá</a></li>
-                                    <li style="width: 150px"><a href="contactus.html">Liên hệ</a></li>
+                                    <li style="width: 200px"><a href="<c:url value="/product/new"/>">Sách mới</a></li>
+                                    <li style="width: 150px"><a href="<c:url value="/contact"/>">Liên hệ</a></li>
                                 </ul>
                             </div>
                         </nav>

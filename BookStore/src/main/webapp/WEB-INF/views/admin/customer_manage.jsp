@@ -64,7 +64,7 @@
                                         <th>Hình ảnh</th>
                                         <th>Tên đăng nhập</th>
                                         <th>Mật khẩu</th>
-                                        <th>Trạng thái</th>
+<%--                                        <th>Trạng thái</th>--%>
     <%--                                    <th>Sửa</th>--%>
     <%--                                    <th>Xóa</th>--%>
                                     </tr>
@@ -83,16 +83,16 @@
                                             <td>${customer.avatar}</td>
                                             <td>${customer.username}</td>
                                             <td>${customer.password}</td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${customer.status == 1}">
-                                                        <c:out value="Hiệu lực"/>
-                                                    </c:when>
-                                                    <c:when test="${customer.status != 1}">
-                                                        <c:out value="Không hiệu lực"/>
-                                                    </c:when>
-                                                </c:choose>
-                                            </td>
+<%--                                            <td>--%>
+<%--                                                <c:choose>--%>
+<%--                                                    <c:when test="${customer.status == 1}">--%>
+<%--                                                        <c:out value="Hiệu lực"/>--%>
+<%--                                                    </c:when>--%>
+<%--                                                    <c:when test="${customer.status != 1}">--%>
+<%--                                                        <c:out value="Không hiệu lực"/>--%>
+<%--                                                    </c:when>--%>
+<%--                                                </c:choose>--%>
+<%--                                            </td>--%>
     <%--                                        <td>--%>
     <%--                                            <a href="<c:url value="/admin/customer/edit-customer/${staff.id}"/>" class="edit"--%>
     <%--                                               title="Edit"><i class="fas fa-pen"></i></a>--%>

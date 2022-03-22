@@ -45,4 +45,8 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer login(String username, String password) {
         return loginRepo.login(username,password);
     }
+
+    public List<Customer> findAllByUsernameAndStatus(String username) {
+        return customerRepo.findAllByUsername(username);
+    }
 }

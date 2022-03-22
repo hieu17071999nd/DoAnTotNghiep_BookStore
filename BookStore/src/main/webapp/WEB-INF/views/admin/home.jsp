@@ -36,7 +36,7 @@
 
             <!-- Main content -->
             <div class="row">
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-3 col-6" style="margin-left: 10px">
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -46,7 +46,7 @@
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
-                        <a href="<c:url value="/admin/order/get"/>" class="small-box-footer">Xem thông tin<i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="<c:url value="/admin/order/approve/get"/>" class="small-box-footer">Xem thông tin<i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>

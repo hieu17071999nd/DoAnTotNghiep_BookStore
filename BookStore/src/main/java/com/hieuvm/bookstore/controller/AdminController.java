@@ -1,5 +1,6 @@
 package com.hieuvm.bookstore.controller;
 
+import com.hieuvm.bookstore.model.Order;
 import com.hieuvm.bookstore.model.OrderItem;
 import com.hieuvm.bookstore.model.Staff;
 import com.hieuvm.bookstore.service.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -25,11 +27,24 @@ public class AdminController {
     @Autowired
     private OrderItemService orderItemService;
 
+    @Autowired
+    private OrderService orderService;
+
     @RequestMapping(value = "/admin/home", method = RequestMethod.GET)
     public String homePage(ModelMap modelMap) {
-        List<OrderItem> orderItems = orderItemService.getAllByStatus(1L);
-        modelMap.addAttribute("numberOrderNew",orderItems.size());
+        List<Order> orders = orderService.getAllByStatus(1L);
+        modelMap.addAttribute("numberOrderNew",orders.size());
         return "admin/home";
+    }
+
+    @RequestMapping(value = "/admin/logout", method = RequestMethod.GET)
+    public String logOut(ModelMap modelMap, HttpServletRequest request) {
+        HttpSession session=request.getSession();
+        String username= (String) session.getAttribute("username");
+        if(username != null){
+            session.invalidate();
+        }
+        return "admin/login";
     }
 
     @GetMapping("/admin/login")

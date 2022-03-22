@@ -65,6 +65,7 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
                     </c:forEach>
                 </div>
             </div>

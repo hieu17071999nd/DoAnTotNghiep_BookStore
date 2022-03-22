@@ -55,6 +55,7 @@
                                         <th>Số sản phẩm mua</th>
                                         <th>Tổng tiền</th>
                                         <th>Địa chỉ giao hàng</th>
+                                        <th>Ngày đặt hàng</th>
                                         <th>Trạng thái</th>
                                         <th>Xác nhận giao hàng thành công</th>
                                         <th>Hủy đơn hàng</th>
@@ -74,6 +75,7 @@
                                             <td>${order.numerOrderItem}</td>
                                             <td>${order.total}</td>
                                             <td>${order.deliveryAddress}</td>
+                                            <td>${order.createDate}</td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${order.status == 0}">

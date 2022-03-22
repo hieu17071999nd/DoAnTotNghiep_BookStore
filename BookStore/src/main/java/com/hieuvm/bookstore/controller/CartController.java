@@ -44,6 +44,9 @@ public class CartController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    CategoryService categoryService;
+
     @GetMapping("/taikhoan")
     public String profile(ModelMap modelMap, HttpServletRequest request){
         HttpSession session=request.getSession();
@@ -51,12 +54,17 @@ public class CartController {
         modelMap.addAttribute("customer",customer);
         List<Province> provinces=addressService.getAllProvince();
         modelMap.addAttribute("provinces",provinces);
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "web/profile";
     }
 
     @PostMapping("/update-profile")
     public String updateProfile(@ModelAttribute("customer") Customer customer, @RequestParam("file") MultipartFile file,
-                                HttpServletRequest request, RedirectAttributes redirectAttributes){
+                                HttpServletRequest request, RedirectAttributes redirectAttributes, ModelMap modelMap){
         String path=request.getServletContext().getRealPath("/resources/images/user/");
         if(!file.getOriginalFilename().isEmpty()){
             File newFile=new File(path+file.getOriginalFilename());
@@ -79,6 +87,11 @@ public class CartController {
         }
         HttpSession session=request.getSession();
         session.setAttribute("customer",customer);
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "redirect:/taikhoan";
     }
 
@@ -99,6 +112,11 @@ public class CartController {
             itemDtos.add(itemDto);
         }
         modelMap.addAttribute("itemDtos", itemDtos);
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "web/cart";
     }
 
@@ -116,14 +134,12 @@ public class CartController {
                 orderDtos.add(orderDto);
             }
         }
-//        if (orders2.size() > 0) {
-//            for (Order order : orders1) {
-//                List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
-//                OrderDto orderDto = new OrderDto(order, customer, orderItems);
-//                orderDtos.add(orderDto);
-//            }
-//        }
         modelMap.addAttribute("orderDtos", orderDtos);
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "web/ordered";
     }
 
@@ -131,8 +147,14 @@ public class CartController {
     public String orderedHistory(ModelMap modelMap, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("customer");
-        List<OrderItem> orderItems = orderItemService.findAllByCustomerIdAndStatus(customer.getId(), 3L);
+//        List<Order> orders = orderService.findAllByCustomerIdAndStatus(customer.getId(), 4L);
+        List<OrderItem> orderItems = orderItemService.findAllByCustomerIdAndStatus(customer.getId(), 1L);
         modelMap.addAttribute("orderItems", orderItems);
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "web/order_history";
     }
 

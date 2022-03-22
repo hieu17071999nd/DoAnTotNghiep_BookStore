@@ -37,6 +37,9 @@ public class AjaxController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     /*
     Status của Item:
     1: Đang ở trong giỏ hàng của khách hàng
@@ -52,7 +55,12 @@ public class AjaxController {
 
     @RequestMapping("/add-cart")
     @ResponseBody
-    public String addCart(HttpServletRequest request){
+    public String addCart(HttpServletRequest request, ModelMap modelMap){
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
         Long productId= Long.parseLong(request.getParameter("productId"));
         Product product= productService.getById(productId);
         Long customerId= Long.parseLong(request.getParameter("customerId"));
@@ -85,7 +93,12 @@ public class AjaxController {
 
     @RequestMapping("/buy-now")
     @ResponseBody
-    public String buyNow(HttpServletRequest request){
+    public String buyNow(HttpServletRequest request, ModelMap modelMap){
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
         Long productId= Long.parseLong(request.getParameter("productId"));
         Long customerId= Long.parseLong(request.getParameter("customerId"));
         Long n= Long.parseLong(request.getParameter("n"));
@@ -112,7 +125,7 @@ public class AjaxController {
 
     @GetMapping("/getSelectedItem")
     @ResponseBody
-    public String getSelectedItem(HttpServletRequest request, @RequestParam("listChecked[]") List<Integer> a){
+    public String getSelectedItem(HttpServletRequest request, @RequestParam("listChecked[]") List<Integer> a, ModelMap modelMap){
         HttpSession session=request.getSession();
         Customer customer = (Customer) session.getAttribute("customer");
         List<ItemDto> itemDtos=new ArrayList<>();
@@ -127,6 +140,11 @@ public class AjaxController {
             itemDtos.add(itemDto);
         }
         session.setAttribute("itemDtos",itemDtos);
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "";
     }
 
@@ -138,11 +156,16 @@ public class AjaxController {
         modelMap.addAttribute("itemDtos", itemDtos);
         modelMap.addAttribute("customer", customer);
         modelMap.addAttribute("provinces", addressService.getAllProvince());
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "web/checkout";
     }
 
     @PostMapping("/checkout")
-    public String checkout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String checkout(HttpServletRequest request, RedirectAttributes redirectAttributes, ModelMap modelMap) {
         Long customerId = Long.parseLong(request.getParameter("customer_id"));
         String address = request.getParameter("address");
         HttpSession session = request.getSession();
@@ -175,21 +198,19 @@ public class AjaxController {
             if (itemDto.getItem().getId() != null) {
                 itemService.deleteItem(itemDto.getItem().getId());
             }
-//            Product product = productService.getById(item.getProductId());
-//            product.setQuantily(product.getQuantily() - orderItem.getNumber());
-//            productService.save(product);
         }
         if (order.getId() != 0) {
             session.setAttribute("num_item", itemService.getByCustomerId(customerId).size());
             session.removeAttribute("itemDtos");
             redirectAttributes.addFlashAttribute("msg", "Đặt hàng thành công");
-//            String subject = "Xác nhận đơn hàng";
-//            String content = "Chào " + customer.getName() + ".Bạn vừa đặt 1 đơn hàng trên Fashi Shop." +
-//                    "Đơn hàng sẽ được giao trong vòng 1-5 ngày tới.";
-//            emailAPI.sendEmail(customer.getEmail(), subject, content);
         } else {
             redirectAttributes.addFlashAttribute("msg", "Đặt hàng thất bại");
         }
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "redirect:/thanh-toan";
     }
 

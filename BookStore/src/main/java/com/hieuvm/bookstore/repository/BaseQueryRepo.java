@@ -210,4 +210,42 @@ public class BaseQueryRepo {
         return orders;
     }
 
+    public List<Order> getOrderShipperConfirm(Long status, String page, String maxPageItem, Long staffId) {
+        StringBuilder sql = new StringBuilder(" SELECT * FROM orders WHERE 1 = 1 ");
+        if (staffId != null) {
+            sql.append(" and staff_id = :staffId ");
+        }
+        if (status != null) {
+            sql.append(" and status = :status ");
+        }
+        if (page != null) {
+            sql.append(" LIMIT :maxPageItem");
+        } else {
+            sql.append(" LIMIT 5 ");
+        }
+        if (maxPageItem != null) {
+            sql.append(" OFFSET  :page ");
+        } else {
+            sql.append(" OFFSET  0 ");
+        }
+        Query query = em.createNativeQuery(sql.toString(), Order.class);
+        if (staffId != null) {
+            query.setParameter("staffId", staffId);
+        }
+        if (status != null) {
+            query.setParameter("status", status);
+        }
+        if (page != null) {
+            Long a = Long.valueOf(page);
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("page", b * (a -1));
+        }
+        if (maxPageItem != null) {
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("maxPageItem", b);
+        }
+        List<Order> orders = query.getResultList();
+        return orders;
+    }
+
 }

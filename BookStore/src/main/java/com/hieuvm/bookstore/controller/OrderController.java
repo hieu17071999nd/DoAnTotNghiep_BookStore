@@ -4,10 +4,12 @@ import com.hieuvm.bookstore.DTO.OrderDto;
 import com.hieuvm.bookstore.model.Customer;
 import com.hieuvm.bookstore.model.Order;
 import com.hieuvm.bookstore.model.OrderItem;
+import com.hieuvm.bookstore.model.Staff;
 import com.hieuvm.bookstore.repository.BaseQueryRepo;
 import com.hieuvm.bookstore.service.OrderService;
 import com.hieuvm.bookstore.service.CustomerService;
 import com.hieuvm.bookstore.service.OrderItemService;
+import com.hieuvm.bookstore.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -32,6 +35,9 @@ public class OrderController {
 
     @Autowired
     private BaseQueryRepo baseQueryRepo;
+
+    @Autowired
+    private StaffService staffService;
 
     //get all tat ca don hang
     @RequestMapping(value = "/admin/order/get", method = RequestMethod.GET)
@@ -118,9 +124,12 @@ public class OrderController {
     public String getOrderShipper(ModelMap modelMap, HttpServletRequest request){
         String page = request.getParameter("page");
         String maxPageItem = request.getParameter("maxPageItem");
+        HttpSession session=request.getSession();
+        String username= (String) session.getAttribute("username");
+        Staff staff = staffService.getStaffByUsername(username);
 
-        modelMap.addAttribute("list", baseQueryRepo.getOrderShipper(3L, page, maxPageItem));
-        int totalPage= (int) Math.ceil((double) orderService.getAllByStatus(3L).size()/5);
+        modelMap.addAttribute("list", baseQueryRepo.getOrderShipperConfirm(3L, page, maxPageItem, staff.getId()));
+        int totalPage= (int) Math.ceil((double) baseQueryRepo.getOrderShipperConfirm(3L, null, null, staff.getId()).size()/5);
         modelMap.addAttribute("page_id",1);
         modelMap.addAttribute("totalPage",totalPage);
         modelMap.addAttribute("page",1);
@@ -128,9 +137,12 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/admin/order/shipper/get2", method = RequestMethod.GET)
-    public String getOrderShipper2(ModelMap modelMap, @RequestParam("page") int page, @RequestParam("maxPageItem") int maxPageItem){
-        modelMap.addAttribute("list", baseQueryRepo.getOrderShipper(3L, String.valueOf(page), String.valueOf(maxPageItem)));
-        int totalPage= (int) Math.ceil((double) orderService.getAllByStatus(3L).size()/5);
+    public String getOrderShipper2(ModelMap modelMap, @RequestParam("page") int page, @RequestParam("maxPageItem") int maxPageItem, HttpServletRequest request){
+        HttpSession session=request.getSession();
+        String username= (String) session.getAttribute("username");
+        Staff staff = staffService.getStaffByUsername(username);
+        modelMap.addAttribute("list", baseQueryRepo.getOrderShipperConfirm(3L, String.valueOf(page), String.valueOf(maxPageItem), staff.getId()));
+        int totalPage= (int) Math.ceil((double) baseQueryRepo.getOrderShipperConfirm(3L, null, null, staff.getId()).size()/5);
         modelMap.addAttribute("page_id",1);
         modelMap.addAttribute("totalPage",totalPage);
         modelMap.addAttribute("page",1);

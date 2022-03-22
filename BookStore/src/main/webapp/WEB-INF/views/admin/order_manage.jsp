@@ -43,6 +43,20 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-8"><h2>Đơn hàng đã đặt</h2></div>
+                                    <br>
+                                    <form id="frm_config" action="<c:url value='/admin/order/get2'/>" method="post">
+                                        <label class="pull-right m-2"> Nhập thông tin: </label>
+                                        <input type="text" id="txt_search" name="txt_search" class="pull-right m-2" placeholder="Giá trị tìm kiếm" />
+                                        <select id="cbx_searchType" name="status" class="pull-right m-2">
+                                            <option value=""> -- Trạng thái đơn hàng -- </option>
+                                            <option value="1">Hiệu lực</option>
+                                            <option value="2">Đã phê duyệt</option>
+                                            <option value="3">Đã giao cho shipper</option>
+                                            <option value="4">Đơn hàng đã hoàn thành</option>
+                                            <option value="0">Đơn hàng đã hủy</option>
+                                        </select>
+                                        <button class="pull-right btn btn-success m-2" id="btn_search">Tìm kiếm </button>
+                                    </form>
                                 </div>
                             </div>
                             <form action="<c:url value='/admin/order/get2'/>" id="formSubmit" method="get">
@@ -110,6 +124,8 @@
                                 </table>
                                 <input type="hidden" value="" id="page" name="page"/>
                                 <input type="hidden" value="" id="maxPageItem" name="maxPageItem"/>
+                                <input type="hidden" value="" id="status" name="status"/>
+                                <input type="hidden" value="" id="search" name="txt_search"/>
                             </form>
                             <br>
                             <ul class="pagination" id="pagination" style="margin-left: 300px"></ul>

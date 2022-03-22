@@ -15,8 +15,8 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="tg-sectionhead">
-              <h2>Sách bán chạy nhất</h2>
-              <a class="tg-btn" href="javascript:void(0);">Xem tất cả</a>
+              <h2>Sách bán nổi tiếng</h2>
+              <a class="tg-btn" href="<c:url value="/product/hot"/>">Xem tất cả</a>
             </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -145,7 +145,7 @@
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="tg-sectionhead">
               <h2>Sách mới</h2>
-              <a class="tg-btn" href="javascript:void(0);">Xem tất cả</a>
+              <a class="tg-btn" href="<c:url value="/product/new"/>">Xem tất cả</a>
             </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

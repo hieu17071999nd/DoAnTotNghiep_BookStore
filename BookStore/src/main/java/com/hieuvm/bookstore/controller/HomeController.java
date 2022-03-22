@@ -34,8 +34,6 @@ public class HomeController {
 
     @RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
     public ModelAndView home(HttpSession session, ModelMap modelMap) {
-//        Customer customer= (Customer) session.getAttribute("customer");
-//        modelMap.addAttribute("customer",customer);
         modelMap.addAttribute("products",productService.getProductHot());
 
         modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
@@ -109,6 +107,20 @@ public class HomeController {
         return mav;
     }
 
+    @RequestMapping(value = "/product/new", method = RequestMethod.GET)
+    public ModelAndView getProductCategoryNew(ModelMap modelMap) {
+        modelMap.addAttribute("products",baseQueryRepo.getProductNew());
+        modelMap.addAttribute("categories", categoryService.getAllCategory());
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
+        ModelAndView mav = new ModelAndView("web/product");
+        return mav;
+    }
+
     @GetMapping(value = "/searchProduct")
     public String searchProduct(@RequestParam("search") String search, ModelMap modelMap, HttpServletRequest request) {
         String page = request.getParameter("page");
@@ -132,5 +144,16 @@ public class HomeController {
         modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "web/product";
+    }
+
+    @RequestMapping(value = "/contact", method = RequestMethod.GET)
+    public ModelAndView contact(ModelMap modelMap) {
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
+        ModelAndView mav = new ModelAndView("web/contact");
+        return mav;
     }
 }

@@ -11,7 +11,6 @@
 
     <jsp:include page="header.jsp"/>
 
-    <!-- Login Section Begin -->
     <div class="register-login-section spad" style="padding-top: 100px; padding-left: 400px">
         <div class="container">
             <div class="row">

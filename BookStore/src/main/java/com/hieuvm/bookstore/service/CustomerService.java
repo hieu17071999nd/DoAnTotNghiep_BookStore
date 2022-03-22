@@ -20,4 +20,6 @@ public interface CustomerService {
 
     Customer login(String username, String password);
 
+    List<Customer> findAllByUsernameAndStatus(String username);
+
 }

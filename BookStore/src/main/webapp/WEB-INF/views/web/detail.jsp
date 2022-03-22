@@ -97,30 +97,30 @@
                                                         <p>- ${product.description}.</p>
                                                     </div>
                                                     <div class="tg-booktitle">
-                                                        <h4>Nhà xuất bản: Kim đồng</h4>
-<%--                                                        <p>- ${product.description}.</p>--%>
+                                                        <h4>Nhà xuất bản: <span>${product.author}</span></h4>
+<%--                                                        <p>- ${product.author}.</p>--%>
                                                     </div>
-                                                    <div class="tg-sectionhead">
-                                                        <h2>Chi tiết sản phẩm</h2>
-                                                    </div>
-                                                    <ul class="tg-productinfo">
-                                                        <li><span>Format:</span><span>Hardback</span></li>
-                                                        <li><span>Pages:</span><span>528 pages</span></li>
-                                                        <li><span>Dimensions:</span><span>153 x 234 x 43mm | 758g</span></li>
-                                                        <li><span>Publication Date:</span><span>June 27, 2017</span></li>
-                                                        <li><span>Publisher:</span><span>Sunshine Orlando</span></li>
-                                                        <li><span>Language:</span><span>English</span></li>
-                                                        <li><span>Illustrations note:</span><span>b&amp;w images thru-out; 1 x 16pp colour plates</span></li>
-                                                        <li><span>ISBN10:</span><span>1234567890</span></li>
-                                                        <li><span>ISBN13:</span><span>1234567890000</span></li>
-                                                    </ul>
+<%--                                                    <div class="tg-sectionhead">--%>
+<%--                                                        <h2>Chi tiết sản phẩm</h2>--%>
+<%--                                                    </div>--%>
+<%--                                                    <ul class="tg-productinfo">--%>
+<%--                                                        <li><span>Format:</span><span>Hardback</span></li>--%>
+<%--                                                        <li><span>Pages:</span><span>528 pages</span></li>--%>
+<%--                                                        <li><span>Dimensions:</span><span>153 x 234 x 43mm | 758g</span></li>--%>
+<%--                                                        <li><span>Publication Date:</span><span>June 27, 2017</span></li>--%>
+<%--                                                        <li><span>Publisher:</span><span>Sunshine Orlando</span></li>--%>
+<%--                                                        <li><span>Language:</span><span>English</span></li>--%>
+<%--                                                        <li><span>Illustrations note:</span><span>b&amp;w images thru-out; 1 x 16pp colour plates</span></li>--%>
+<%--                                                        <li><span>ISBN10:</span><span>1234567890</span></li>--%>
+<%--                                                        <li><span>ISBN13:</span><span>1234567890000</span></li>--%>
+<%--                                                    </ul>--%>
                                                 </div>
                                             </div>
                                             <div class="tg-relatedproducts">
                                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                     <div class="tg-sectionhead">
                                                         <h2>Sản phẩm liên quan</h2>
-                                                        <a class="tg-btn" href="javascript:void(0);">View All</a>
+<%--                                                        <a class="tg-btn" href="javascript:void(0);">View All</a>--%>
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -220,6 +220,17 @@
                     } else {
                         if(customerId==""){
                             alert("Vui lòng đăng nhập!")
+                            $.ajax({
+                                url:"<c:url value="/login/buy"/>",
+                                type:"get",
+                                data:{
+                                    productId:productId,
+                                    n:n
+                                },
+                                success:function (result){
+                                    window.location.href="<c:url value="/login"/>";
+                                }
+                            });
                         }else {
                             $.ajax({
                                 url:"<c:url value="/add-cart"/>",
@@ -240,7 +251,6 @@
                             });
                         }
                     }
-
             });
             $("#buy").click(function (){
                 var n=$("#quantity1").val();
@@ -251,7 +261,18 @@
                         alert("Yêu cầu chọn trên 1 sản phẩm!");
                     } else {
                         if(customerId==""){
-                            alert("Vui lòng đăng nhập!")
+                            alert("Vui lòng đăng nhập!");
+                            $.ajax({
+                                url:"<c:url value="/login/buy"/>",
+                                type:"get",
+                                data:{
+                                    productId:productId,
+                                    n:n
+                                },
+                                success:function (result){
+                                    window.location.href="<c:url value="/login"/>";
+                                }
+                            });
                         }else {
                             $.ajax({
                                 url:"<c:url value="/buy-now"/>",
