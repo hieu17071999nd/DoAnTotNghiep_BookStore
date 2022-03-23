@@ -32,7 +32,12 @@ public class LoginController {
     private ProductService productService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginView() {
+    public String loginView(ModelMap modelMap) {
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
         return "web/login";
     }
 
@@ -76,12 +81,22 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerView(ModelMap modelMap) {
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
         modelMap.addAttribute("new_customer", new Customer());
         return "web/register";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute("new_customer") Customer customer, HttpServletRequest request) {
+    public String register(@ModelAttribute("new_customer") Customer customer, HttpServletRequest request, ModelMap modelMap) {
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
         List<Customer> customerCheck = customerService.findAllByUsernameAndStatus(customer.getUsername());
         if (customerCheck.size() > 1) {
             request.setAttribute("msg", "Tên đăng nhập này đã tồn tại!");
@@ -98,7 +113,12 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/logout-user",method = RequestMethod.GET )
-    public String logout(HttpServletRequest request){
+    public String logout(HttpServletRequest request, ModelMap modelMap){
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
         HttpSession session=request.getSession();
         if(session!=null){
             session.invalidate();
@@ -108,7 +128,12 @@ public class LoginController {
 
     // cookies mua hang va them vao gio hang
     @RequestMapping(value = "/login/buy", method = RequestMethod.GET)
-    public String loginViewToBuyOrAddCard(HttpServletRequest request, HttpServletResponse response) {
+    public String loginViewToBuyOrAddCard(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
         Long productId= Long.parseLong(request.getParameter("productId"));
         Product product= productService.getById(productId);
         Long n= Long.parseLong(request.getParameter("n"));

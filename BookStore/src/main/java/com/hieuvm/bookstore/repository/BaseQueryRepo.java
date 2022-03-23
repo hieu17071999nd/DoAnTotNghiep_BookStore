@@ -248,4 +248,44 @@ public class BaseQueryRepo {
         return orders;
     }
 
+    public List<Order> getOrderManage(String page, String maxPageItem, Long status, Long search) {
+        StringBuilder sql = new StringBuilder(" SELECT * FROM orders WHERE 1 = 1 ");
+        if (search != null) {
+            sql.append(" and id = :id ");
+        }
+        if (status != null) {
+            sql.append(" and status = :status ");
+        }
+        if (page != null) {
+            sql.append(" LIMIT :maxPageItem");
+        } else {
+//            sql.append(" LIMIT 5 ");
+            sql.append("  ");
+        }
+        if (maxPageItem != null) {
+            sql.append(" OFFSET  :page ");
+        } else {
+//            sql.append(" OFFSET  0 ");
+            sql.append("  ");
+        }
+        Query query = em.createNativeQuery(sql.toString(), Order.class);
+        if (search != null) {
+            query.setParameter("id", search);
+        }
+        if (status != null) {
+            query.setParameter("status", status);
+        }
+        if (page != null) {
+            Long a = Long.valueOf(page);
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("page", b * (a -1));
+        }
+        if (maxPageItem != null) {
+            Long b = Long.valueOf(maxPageItem);
+            query.setParameter("maxPageItem", b);
+        }
+        List<Order> orders = query.getResultList();
+        return orders;
+    }
+
 }

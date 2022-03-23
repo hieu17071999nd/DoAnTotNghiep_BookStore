@@ -95,13 +95,16 @@ public class HomeController {
 
     @RequestMapping(value = "/product/hot", method = RequestMethod.GET)
     public ModelAndView getProductCategoryHot(ModelMap modelMap) {
-        modelMap.addAttribute("products",productService.getProductHot());
-        modelMap.addAttribute("categories", categoryService.getAllCategory());
+        modelMap.addAttribute("products",baseQueryRepo.getProductHot());
 
+        modelMap.addAttribute("categories", categoryService.getAllCategory());
         modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
         modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
         modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
+        modelMap.addAttribute("totalPage", baseQueryRepo.getProductHot().size()/4);
+        modelMap.addAttribute("page", 1);
 
         ModelAndView mav = new ModelAndView("web/product");
         return mav;
@@ -116,6 +119,9 @@ public class HomeController {
         modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
         modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
+        modelMap.addAttribute("totalPage", baseQueryRepo.getProductNew().size()/4);
+        modelMap.addAttribute("page", 1);
 
         ModelAndView mav = new ModelAndView("web/product");
         return mav;

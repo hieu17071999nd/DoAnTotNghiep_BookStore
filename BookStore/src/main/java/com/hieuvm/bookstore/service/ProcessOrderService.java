@@ -1,5 +1,6 @@
 package com.hieuvm.bookstore.service;
 
+import com.hieuvm.bookstore.model.Customer;
 import com.hieuvm.bookstore.model.Order;
 import com.hieuvm.bookstore.repository.EmployeeRepository;
 import org.activiti.engine.*;
@@ -27,6 +28,9 @@ public class ProcessOrderService {
 	@Autowired
 	private OrderService orderService;
 
+	@Autowired
+	private CustomerService customerService;
+
 	@PostConstruct
 	void init() {
 		int i = 1;
@@ -34,6 +38,10 @@ public class ProcessOrderService {
 	}
 
 	public void startBookOrder(Order order) {
+//		Customer customer = customerService.getById(order.getCustomerId());
+//		Map<String, Object> variables = new HashMap<>();
+//		variables.put("customer_email", customer.getEmail().toLowerCase());
+
 		String bpId = runtimeService.startProcessInstanceByKey("bookOrder").getProcessInstanceId();
 		order.setId(Long.parseLong(bpId));
 		orderService.insert(order);

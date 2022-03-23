@@ -3,7 +3,7 @@
   <process id="bookOrder" name="bookOrder" isExecutable="true">
     <startEvent id="start" name="Start"></startEvent>
     <sequenceFlow id="flow1" sourceRef="start" targetRef="receiveOrderTask"></sequenceFlow>
-    <userTask id="approveOrdersTask" name="Duyệt đơn hàng" activiti:assignee="hieu" activiti:candidateUsers="admin" activiti:candidateGroups="staffs"></userTask>
+    <userTask id="approveOrdersTask6" name="Duyệt đơn hàng" activiti:assignee="hieu" activiti:candidateUsers="admin" activiti:candidateGroups="staffs"></userTask>
     <serviceTask id="receiveOrderTask" name="Nhận đơn hàng" activiti:async="true" activiti:class="com.hieuvm.bookstore.task.ReceiveOrder">
       <documentation>Lưu trữ thông tin đơn hàng vào các bảng order</documentation>
     </serviceTask>
@@ -23,7 +23,7 @@
           <activiti:string><![CDATA[hieumv99nd@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[hieumvnucek62@gmail.com]]></activiti:string>
+          <activiti:expression><![CDATA[${customer_email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Xác nhận duyệt đơn hàng]]></activiti:string>
@@ -40,7 +40,7 @@
     <serviceTask id="mailtask2" name="Gửi mail thông báo đơn hàng đã giao cho đơn vị vận chuyển" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[hieumvnucek62@gmail.com]]></activiti:string>
+          <activiti:expression><![CDATA[${customer_email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[hieumv99nd@gmail.com]]></activiti:string>
@@ -61,11 +61,11 @@
     <sequenceFlow id="flow27" sourceRef="assignedStaffTransportTask" targetRef="mailtask2"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="mailtask2" targetRef="successfulDeliveryConfirmationTask"></sequenceFlow>
     <serviceTask id="cancelOrderTask" name="Hủy đơn hàng" activiti:class="com.hieuvm.bookstore.task.CancelOrderTask"></serviceTask>
-    <sequenceFlow id="flow33" sourceRef="receiveOrderTask" targetRef="approveOrdersTask"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="receiveOrderTask" targetRef="approveOrdersTask6"></sequenceFlow>
     <serviceTask id="mailtask3" name="Gửi email hủy đơn hàng" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[hieumvnucek62@gmail.com]]></activiti:string>
+          <activiti:expression><![CDATA[${customer_email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[hieumv99nd@gmail.com]]></activiti:string>
@@ -82,12 +82,12 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow35" sourceRef="approveOrdersTask" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="approveOrdersTask6" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="mailtask1" targetRef="substractInventoryTask"></sequenceFlow>
     <serviceTask id="mailtask6" name="Gửi mail thông báo đơn hàng được giao thành công" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[hieumvnucek62@gmail.com]]></activiti:string>
+          <activiti:expression><![CDATA[${customer_email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[hieumv99nd@gmail.com]]></activiti:string>
@@ -125,7 +125,7 @@
       <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
         <omgdc:Bounds height="35.0" width="35.0" x="11.0" y="183.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="approveOrdersTask" id="BPMNShape_approveOrdersTask">
+      <bpmndi:BPMNShape bpmnElement="approveOrdersTask6" id="BPMNShape_approveOrdersTask6">
         <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="173.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="receiveOrderTask" id="BPMNShape_receiveOrderTask">

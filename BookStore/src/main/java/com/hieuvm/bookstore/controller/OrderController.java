@@ -45,20 +45,47 @@ public class OrderController {
         Pageable pageable = PageRequest.of(0, 5);
         modelMap.addAttribute("list", orderService.getAll(pageable));
         int totalPage= (int) Math.ceil((double) orderService.getAllOrder().size()/5);
+        modelMap.addAttribute("txt_search",null);
+        modelMap.addAttribute("cbb_status",null);
         modelMap.addAttribute("page_id",1);
         modelMap.addAttribute("totalPage",totalPage);
         modelMap.addAttribute("page",1);
+        modelMap.addAttribute("maxPageItem",5);
         return "admin/order_manage";
     }
 
     @RequestMapping(value = "/admin/order/get2", method = RequestMethod.GET)
-    private String getAll2(ModelMap modelMap, @RequestParam("page") int page, @RequestParam("maxPageItem") int maxPageItem) {
-        Pageable pageable = PageRequest.of(page - 1, maxPageItem);
-        modelMap.addAttribute("list", orderService.getAll(pageable));
-        int totalPage= (int) Math.ceil((double) orderService.getAllOrder().size()/maxPageItem);
+    private String getAll2(ModelMap modelMap, @RequestParam("page") int page, @RequestParam("maxPageItem") int maxPageItem, HttpServletRequest request) {
+        String txt_search = request.getParameter("txt_search");
+        String cbb_status = request.getParameter("cbb_status");
+        Long search;
+        Long status;
+        if (txt_search == null || txt_search.isEmpty()) {
+            search = null;
+        } else {
+            search = Long.valueOf(txt_search);
+        }
+        if (cbb_status == null || cbb_status.isEmpty()) {
+            status = null;
+        } else {
+            status = Long.valueOf(cbb_status);
+        }
+
+        modelMap.addAttribute("list", baseQueryRepo.getOrderManage(String.valueOf(page), String.valueOf(maxPageItem), status, search));
+        int totalPage= (int) Math.ceil((double) baseQueryRepo.getOrderManage(null, null, status, search).size()/5);
+//        modelMap.addAttribute("page_id",1);
+//        modelMap.addAttribute("totalPage",totalPage);
+//        modelMap.addAttribute("page",1);
+
+//        Pageable pageable = PageRequest.of(page - 1, maxPageItem);
+//        modelMap.addAttribute("list", orderService.getAll(pageable));
+//        int totalPage= (int) Math.ceil((double) orderService.getAllOrder().size()/maxPageItem);
         modelMap.addAttribute("page_id",maxPageItem * (page -1) + 1);
         modelMap.addAttribute("totalPage",totalPage);
         modelMap.addAttribute("page", page);
+        modelMap.addAttribute("maxPageItem", maxPageItem);
+        modelMap.addAttribute("txt_search", search);
+        modelMap.addAttribute("cbb_status", status);
         return "admin/order_manage";
     }
 

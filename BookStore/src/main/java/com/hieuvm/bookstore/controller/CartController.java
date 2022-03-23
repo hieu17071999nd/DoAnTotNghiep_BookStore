@@ -127,7 +127,22 @@ public class CartController {
         List<OrderDto> orderDtos = new ArrayList<>();
         List<Order> orders1 = orderService.findAllByCustomerIdAndStatus(customer.getId(), 1L);
         List<Order> orders2 = orderService.findAllByCustomerIdAndStatus(customer.getId(), 2L);
+        List<Order> orders3 = orderService.findAllByCustomerIdAndStatus(customer.getId(), 3L);
         if (orders1.size() > 0) {
+            for (Order order : orders1) {
+                List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+                OrderDto orderDto = new OrderDto(order, customer, orderItems);
+                orderDtos.add(orderDto);
+            }
+        }
+        if (orders2.size() > 0) {
+            for (Order order : orders1) {
+                List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+                OrderDto orderDto = new OrderDto(order, customer, orderItems);
+                orderDtos.add(orderDto);
+            }
+        }
+        if (orders3.size() > 0) {
             for (Order order : orders1) {
                 List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
                 OrderDto orderDto = new OrderDto(order, customer, orderItems);

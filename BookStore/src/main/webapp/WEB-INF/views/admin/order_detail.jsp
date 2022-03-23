@@ -39,7 +39,7 @@
                     <p><b>Mã khách hàng:</b>${orderDto.customer.id}</p>
                     <p><b>Tên khách hàng:</b>${orderDto.customer.name}</p>
                     <p><b>Email:</b>${orderDto.customer.email}</p>
-                    <p><b>SĐT:</b>${orderDto.customer.phone}</p>
+                    <p><b>SĐT:</b>0${orderDto.customer.phone}</p>
                     <p><b>Thời gian đặt hàng:</b>${orderDto.order.createDate}</p>
                     <p><b>Địa chỉ giao hàng:</b>${orderDto.order.deliveryAddress}</p>
                         <table id="example2" class="table table-bordered table-hover" style="text-align: center">

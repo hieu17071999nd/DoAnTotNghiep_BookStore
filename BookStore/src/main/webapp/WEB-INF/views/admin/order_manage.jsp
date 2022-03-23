@@ -44,17 +44,61 @@
                                 <div class="row">
                                     <div class="col-sm-8"><h2>Đơn hàng đã đặt</h2></div>
                                     <br>
-                                    <form id="frm_config" action="<c:url value='/admin/order/get2'/>" method="post">
-                                        <label class="pull-right m-2"> Nhập thông tin: </label>
-                                        <input type="text" id="txt_search" name="txt_search" class="pull-right m-2" placeholder="Giá trị tìm kiếm" />
-                                        <select id="cbx_searchType" name="status" class="pull-right m-2">
-                                            <option value=""> -- Trạng thái đơn hàng -- </option>
-                                            <option value="1">Hiệu lực</option>
-                                            <option value="2">Đã phê duyệt</option>
-                                            <option value="3">Đã giao cho shipper</option>
-                                            <option value="4">Đơn hàng đã hoàn thành</option>
-                                            <option value="0">Đơn hàng đã hủy</option>
+                                    <form id="frm_config" action="<c:url value='/admin/order/get2'/>" method="get">
+                                        <label class="pull-right m-2"> Nhập mã đơn hàng: </label>
+                                        <input value="${txt_search}" type="number" id="txt_search" name="txt_search" class="pull-right m-2" placeholder="Giá trị mã đơn hàng" />
+                                        <select id="cbx_status" name="cbb_status" class="pull-right m-2">
+                                            <c:if test="${cbb_status == null}">
+                                                <option value=""> -- Trạng thái đơn hàng -- </option>
+                                                <option value="1">Hiệu lực</option>
+                                                <option value="2">Đã phê duyệt</option>
+                                                <option value="3">Đã giao cho shipper</option>
+                                                <option value="4">Đơn hàng đã hoàn thành</option>
+                                                <option value="0">Đơn hàng đã hủy</option>
+                                            </c:if>
+                                            <c:if test="${cbb_status == 1}">
+                                                <option value="1">Hiệu lực</option>
+                                                <option value=""> -- Trạng thái đơn hàng -- </option>
+                                                <option value="2">Đã phê duyệt</option>
+                                                <option value="3">Đã giao cho shipper</option>
+                                                <option value="4">Đơn hàng đã hoàn thành</option>
+                                                <option value="0">Đơn hàng đã hủy</option>
+                                            </c:if>
+                                            <c:if test="${cbb_status == 2}">
+                                                <option value="2">Đã phê duyệt</option>
+                                                <option value=""> -- Trạng thái đơn hàng -- </option>
+                                                <option value="1">Hiệu lực</option>
+                                                <option value="3">Đã giao cho shipper</option>
+                                                <option value="4">Đơn hàng đã hoàn thành</option>
+                                                <option value="0">Đơn hàng đã hủy</option>
+                                            </c:if>
+                                            <c:if test="${cbb_status == 3}">
+                                                <option value="3">Đã giao cho shipper</option>
+                                                <option value=""> -- Trạng thái đơn hàng -- </option>
+                                                <option value="1">Hiệu lực</option>
+                                                <option value="2">Đã phê duyệt</option>
+                                                <option value="4">Đơn hàng đã hoàn thành</option>
+                                                <option value="0">Đơn hàng đã hủy</option>
+                                            </c:if>
+                                            <c:if test="${cbb_status == 4}">
+                                                <option value="4">Đơn hàng đã hoàn thành</option>
+                                                <option value=""> -- Trạng thái đơn hàng -- </option>
+                                                <option value="1">Hiệu lực</option>
+                                                <option value="2">Đã phê duyệt</option>
+                                                <option value="3">Đã giao cho shipper</option>
+                                                <option value="0">Đơn hàng đã hủy</option>
+                                            </c:if>
+                                            <c:if test="${cbb_status == 0}">
+                                                <option value="0">Đơn hàng đã hủy</option>
+                                                <option value=""> -- Trạng thái đơn hàng -- </option>
+                                                <option value="1">Hiệu lực</option>
+                                                <option value="2">Đã phê duyệt</option>
+                                                <option value="3">Đã giao cho shipper</option>
+                                                <option value="4">Đơn hàng đã hoàn thành</option>
+                                            </c:if>
                                         </select>
+                                        <input type="hidden" value="${page}" id="pagehidden" name="page"/>
+                                        <input type="hidden" value="${maxPageItem}" id="maxPageItemhidden" name="maxPageItem"/>
                                         <button class="pull-right btn btn-success m-2" id="btn_search">Tìm kiếm </button>
                                     </form>
                                 </div>
@@ -124,8 +168,8 @@
                                 </table>
                                 <input type="hidden" value="" id="page" name="page"/>
                                 <input type="hidden" value="" id="maxPageItem" name="maxPageItem"/>
-                                <input type="hidden" value="" id="status" name="status"/>
-                                <input type="hidden" value="" id="search" name="txt_search"/>
+                                <input type="hidden" value="${cbb_status}" id="status" name="cbb_status"/>
+                                <input type="hidden" value="${txt_search}" id="search" name="txt_search"/>
                             </form>
                             <br>
                             <ul class="pagination" id="pagination" style="margin-left: 300px"></ul>
