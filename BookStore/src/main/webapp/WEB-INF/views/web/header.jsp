@@ -144,26 +144,26 @@
                                                             </ul>
 <%--                                                            <a class="tg-btnviewall" href="products.html">View All</a>--%>
                                                         </li>
-                                                        <li>
-                                                            <div class="tg-linkstitle">
-                                                                <h2>Sách luyện thi THPT</h2>
-                                                            </div>
-                                                            <ul>
-                                                                <li><a href="products.html">Môn toán</a></li>
-                                                                <li><a href="products.html">Môn lý</a></li>
-                                                                <li><a href="products.html">Môn hóa</a></li>
-                                                                <li><a href="products.html">Môn sinh</a></li>
-                                                                <li><a href="products.html">Môn tiếng anh</a></li>
-                                                                <li><a href="products.html">Môn văn</a></li>
-                                                                <li><a href="products.html">Môn lịch sử</a></li>
-                                                                <li><a href="products.html">Môn địa lý</a></li>
-                                                                <li><a href="products.html">Giáo dục công dân</a></li>
-                                                                <li><a href="products.html">--</a></li>
-                                                                <li><a href="products.html">--</a></li>
-                                                                <li><a href="products.html">--</a></li>
-                                                            </ul>
-<%--                                                            <a class="tg-btnviewall" href="products.html">View All</a>--%>
-                                                        </li>
+<%--                                                        <li>--%>
+<%--                                                            <div class="tg-linkstitle">--%>
+<%--                                                                <h2>Sách luyện thi THPT</h2>--%>
+<%--                                                            </div>--%>
+<%--                                                            <ul>--%>
+<%--                                                                <li><a href="products.html">Môn toán</a></li>--%>
+<%--                                                                <li><a href="products.html">Môn lý</a></li>--%>
+<%--                                                                <li><a href="products.html">Môn hóa</a></li>--%>
+<%--                                                                <li><a href="products.html">Môn sinh</a></li>--%>
+<%--                                                                <li><a href="products.html">Môn tiếng anh</a></li>--%>
+<%--                                                                <li><a href="products.html">Môn văn</a></li>--%>
+<%--                                                                <li><a href="products.html">Môn lịch sử</a></li>--%>
+<%--                                                                <li><a href="products.html">Môn địa lý</a></li>--%>
+<%--                                                                <li><a href="products.html">Giáo dục công dân</a></li>--%>
+<%--                                                                <li><a href="products.html">--</a></li>--%>
+<%--                                                                <li><a href="products.html">--</a></li>--%>
+<%--                                                                <li><a href="products.html">--</a></li>--%>
+<%--                                                            </ul>--%>
+<%--&lt;%&ndash;                                                            <a class="tg-btnviewall" href="products.html">View All</a>&ndash;%&gt;--%>
+<%--                                                        </li>--%>
                                                     </ul>
                                                 </div>
                                             </div>

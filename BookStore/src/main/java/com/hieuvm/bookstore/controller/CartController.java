@@ -4,6 +4,8 @@ import com.hieuvm.bookstore.DTO.ItemDto;
 import com.hieuvm.bookstore.DTO.OrderDto;
 import com.hieuvm.bookstore.model.*;
 import com.hieuvm.bookstore.service.*;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,7 +20,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CartController {
@@ -46,6 +50,9 @@ public class CartController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    private TaskService taskService;
 
     @GetMapping("/taikhoan")
     public String profile(ModelMap modelMap, HttpServletRequest request){
@@ -171,6 +178,69 @@ public class CartController {
         modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
         return "web/order_history";
+    }
+
+    @GetMapping("/huydonhangdangdat/{id}")
+    public String orderedHistory(@PathVariable("id") Long id, ModelMap modelMap, HttpServletRequest request) {
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+
+        Order orderCheck = orderService.getById(id);
+        if (orderCheck.getStatus() == 1L) {
+            modelMap.addAttribute("msg", "Đơn hàng của bạn đã được hủy!");
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("var_approveOrder", false);
+
+            Customer customer = customerService.getById(orderCheck.getCustomerId());
+            variables.put("customer_email", customer.getEmail().toLowerCase());
+
+            List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrdersTask6").list();
+            for (Task task: tasks) {
+                taskService.complete(task.getId(), variables);
+            }
+            Order order = orderService.getById(id);
+            order.setStatus(0L);
+            orderService.save(order);
+        } else {
+            modelMap.addAttribute("msg", "Đơn hàng của bạn đã sẵn sàng giao hàng, không thể hủy!");
+        }
+
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("customer");
+        List<OrderDto> orderDtos = new ArrayList<>();
+        List<Order> orders1 = orderService.findAllByCustomerIdAndStatus(customer.getId(), 1L);
+        List<Order> orders2 = orderService.findAllByCustomerIdAndStatus(customer.getId(), 2L);
+        List<Order> orders3 = orderService.findAllByCustomerIdAndStatus(customer.getId(), 3L);
+        if (orders1.size() > 0) {
+            for (Order order : orders1) {
+                List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+                OrderDto orderDto = new OrderDto(order, customer, orderItems);
+                orderDtos.add(orderDto);
+            }
+        }
+        if (orders2.size() > 0) {
+            for (Order order : orders1) {
+                List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+                OrderDto orderDto = new OrderDto(order, customer, orderItems);
+                orderDtos.add(orderDto);
+            }
+        }
+        if (orders3.size() > 0) {
+            for (Order order : orders1) {
+                List<OrderItem> orderItems = orderItemService.getAllOrderItemByOrderId(order.getId());
+                OrderDto orderDto = new OrderDto(order, customer, orderItems);
+                orderDtos.add(orderDto);
+            }
+        }
+        modelMap.addAttribute("orderDtos", orderDtos);
+
+        modelMap.addAttribute("categoryParents",categoryService.getAllCategoryParents());
+        modelMap.addAttribute("categorySGKs",categoryService.getAllCategorySGK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        modelMap.addAttribute("categorySTKs",categoryService.getAllCategorySTK());
+        return "web/ordered";
     }
 
 }

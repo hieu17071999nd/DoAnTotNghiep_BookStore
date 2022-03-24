@@ -38,9 +38,19 @@ public class ProcessOrderService {
 	}
 
 	public void startBookOrder(Order order) {
-//		Customer customer = customerService.getById(order.getCustomerId());
-//		Map<String, Object> variables = new HashMap<>();
-//		variables.put("customer_email", customer.getEmail().toLowerCase());
+//		@BeforeClass
+//		public static void init() {
+//			ProcessEngine processEngine = ProcessEngineConfiguration
+//					.createStandaloneInMemProcessEngineConfiguration()
+//					.buildProcessEngine();
+//
+//			RepositoryService repositoryService = processEngine.getRepositoryService();
+//			repositoryService.createDeployment()
+//					.addClasspathResource("chapter4/bookorder.bpmn20.xml")
+//					.deploy();
+//
+//			runtimeService = processEngine.getRuntimeService();
+//		}
 
 		String bpId = runtimeService.startProcessInstanceByKey("bookOrder").getProcessInstanceId();
 		order.setId(Long.parseLong(bpId));

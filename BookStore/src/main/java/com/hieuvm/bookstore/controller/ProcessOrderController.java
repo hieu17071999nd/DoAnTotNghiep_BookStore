@@ -153,13 +153,19 @@ public class ProcessOrderController {
 		HttpSession session = request.getSession();
 		String username= (String) session.getAttribute("username");
 		Staff staff = staffService.getStaffByUsername(username);
+		Order order = orderService.getById(id);
+
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("var_approveOrder", false);
-		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrdersTask").list();
+
+		Customer customer = customerService.getById(order.getCustomerId());
+		variables.put("customer_email", customer.getEmail().toLowerCase());
+
+		List<Task> tasks = taskService.createTaskQuery().taskDefinitionKey("approveOrdersTask6").list();
 		for (Task task: tasks) {
 			taskService.complete(task.getId(), variables);
 		}
-		Order order = orderService.getById(id);
+
 		order.setStatus(0L);
 		orderService.save(order);
 

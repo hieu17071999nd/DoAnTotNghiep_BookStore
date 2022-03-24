@@ -25,7 +25,7 @@ public interface OrderService {
 
     Order findOne(Long id);
 
-    Boolean save(Order bill);
+    Boolean save(Order order);
 
     int totalItem();
 }
